@@ -12,6 +12,12 @@ namespace UltimateSpawner2D {
 
 		#endregion
 
+		#region Spawner Advanced Settings
+
+		public bool ShowDebugMessages;
+
+		#endregion
+
 		#region Pooling Setup
 
 		// Pool Basic Settings
@@ -33,11 +39,12 @@ namespace UltimateSpawner2D {
 		#region UnityCalls
 
 		void Awake() {
-
+			StartPool();
 		}
 
 		void Update() {
-
+			if (Input.GetKeyDown(KeyCode.Space))
+				Spawn();
 		}
 
 		#endregion
@@ -65,6 +72,9 @@ namespace UltimateSpawner2D {
 			// Check for the next available object in pool
 			for (int i = 0; i < objectsPool.Count; i++) {
 				if (!objectsPool[i].activeInHierarchy) {
+					if(Application.isEditor && ShowDebugMessages)
+						Debug.Log(string.Format("Object {0} in pool was choosen", i));
+					
 					return objectsPool[i];
 				}
 			}
@@ -72,9 +82,16 @@ namespace UltimateSpawner2D {
 			// If there is no object available in pool and we can icrease the pool
 			// Spawn a new object
 			if (canIncreasePoolSize && objectsPool.Count < poolMaxSize) {
+				if(Application.isEditor && ShowDebugMessages)
+					Debug.Log("Pool reached max size! Adding another object to the pool!");
+				
 				GameObject newPoolObject = Instantiate(objectToSpawn);
 				objectToSpawn.SetActive(false);
 				return newPoolObject;
+			}
+			else {
+				if(Application.isEditor && ShowDebugMessages)
+					Debug.Log("Pool reached max size! Unfortunately it reached it's maximum size.");
 			}
 
 			return null;
