@@ -65,6 +65,9 @@ namespace UltimateSpawner2D {
 				poolObject.SetActive(false);
 				objectsPool.Add(poolObject);
 			}
+			
+			if(Application.isEditor && ShowDebugMessages)
+				Debug.Log("Pool created!");
 		}
 		
 		GameObject GetNextObject() {
@@ -107,7 +110,8 @@ namespace UltimateSpawner2D {
 			currentPoolGameObject = GetNextObject();
 			
 			// Activate it
-			currentPoolGameObject.SetActive(true);
+			if(currentPoolGameObject != null)
+				currentPoolGameObject.SetActive(true);
 		}
 		
 		#endregion

@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class Square : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+	void OnEnable () {
 		StartCoroutine(AutoDeactivate());
 	}
 	
 	IEnumerator AutoDeactivate() {
-		yield return new WaitForSeconds(.5f);
+		yield return new WaitForSeconds(1f);
 		gameObject.SetActive(false);
 	}
 }
