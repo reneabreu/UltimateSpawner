@@ -216,6 +216,8 @@ namespace UltimateSpawner {
 
 					if (spawnRotation != SpawnRotation.ObjectOwnRotation)
 						currentPoolGameObject.transform.rotation = GetSpawnRotation();
+
+					ApplyMovement(currentPoolGameObject);
 				}
 			}
 			// Instantiate New Object
@@ -226,6 +228,8 @@ namespace UltimateSpawner {
 
 				if (spawnRotation != SpawnRotation.ObjectOwnRotation)
 					instantiatedObject.transform.rotation = GetSpawnRotation();
+
+				ApplyMovement(instantiatedObject);
 			}
 		}
 		
