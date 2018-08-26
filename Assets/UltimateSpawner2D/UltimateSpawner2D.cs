@@ -20,8 +20,9 @@ namespace UltimateSpawner2D {
 
 		#endregion
 
-		#region Spawner Advanced Settings
-
+		#region Spawn Mode Settings
+		
+		// Input
 		public KeyCode inputKeyCode;
 
 		#endregion
@@ -59,13 +60,28 @@ namespace UltimateSpawner2D {
 		public float maxDelayBetweenSpawns;		
 
 		// Progressive Configuration
-		[Tooltip("Time since script activation to spawn first object")] 
+		[Tooltip("Time between spawns. (after first spawn)")] 
 		public float startingDelayBetweenSpawns;
 		[Tooltip("")]
 		public float delayModifier;
 		[Tooltip("Since we use a countdown timer remember to use a value minor than the Starting Delay but greater than 0")] 
 		public float progressiveDelayLimit;
 			
+		#endregion
+
+		#region Position Setup
+
+		public SpawnAt spawnAt;
+		
+		// Fixed
+		public PositionToSpawn fixedPosition;
+		
+		// Random
+		public List<PositionToSpawn> spawnPoints;
+
+		// Target
+		public Transform targetTransform;
+		
 		#endregion
 
 		#region UnityCalls
@@ -165,11 +181,14 @@ namespace UltimateSpawner2D {
 				// Activate it
 				if (currentPoolGameObject != null)
 					currentPoolGameObject.SetActive(true);
+				
+				// Position it
+				currentPoolGameObject.transform.position = GetSpawnPosition();
 
 			}
 			// Instantiate New Object
 			else {
-				Instantiate(objectToSpawn, Vector2.zero, Quaternion.identity);
+				Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
 			}
 		}
 		
@@ -248,6 +267,48 @@ namespace UltimateSpawner2D {
 		}
 		
 		#endregion
+
+		#region Position
+
+		void OnDrawGizmos() {
+
+			switch (spawnAt) {
+				case SpawnAt.Fixed:
+					Gizmos.DrawIcon(fixedPosition.vectorPosition, "Spawner.png", true);
+					break;
+				case SpawnAt.Random:
+					foreach (var spawnPoint in spawnPoints) {
+						if (spawnPoint != null)
+							Gizmos.DrawIcon(spawnPoint.vectorPosition, "Spawner.png", true);
+						
+					}
+					break;
+			}
+		}
+
+		Vector3 GetSpawnPosition() {
+			switch (spawnAt) {
+					case SpawnAt.Fixed:
+						return fixedPosition.vectorPosition;
+						break;
+					case SpawnAt.Spawner:
+						return transform.position;
+						break;
+					case SpawnAt.Random:
+						int randomSpawnpoint = Random.Range(0, spawnPoints.Count);
+						return spawnPoints[randomSpawnpoint].vectorPosition;
+						break;
+					case SpawnAt.TargetTransform:
+						return targetTransform.position;
+						break;
+			}
+			if(Application.isEditor && ShowDebugMessages)
+				Debug.Log("Something went wrong and the position is null");
+			return Vector3.zero;
+		}
+		
+
+		#endregion
 	}
 
 	public enum SpawnMode {
@@ -257,6 +318,12 @@ namespace UltimateSpawner2D {
 		External,
 		Input
 	}
-	
+
+	public enum SpawnAt {
+		Spawner,
+		Fixed,
+		Random,
+		TargetTransform
+	}
 	
 }
