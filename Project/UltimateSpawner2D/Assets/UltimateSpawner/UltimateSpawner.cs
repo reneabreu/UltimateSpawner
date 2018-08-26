@@ -10,8 +10,6 @@ namespace UltimateSpawner {
 
 		[Tooltip("Choose a Object to spawn")] 
 		public GameObject objectToSpawn;
-
-		public ObjectType objectType;
 		
 		[Tooltip("Should we use object pooling?")] 
 		public bool usePoolSystem;
@@ -95,6 +93,24 @@ namespace UltimateSpawner {
 		public float customRotationY;
 		public float customRotationZ;
 
+		#endregion
+
+		#region Movement Setup
+		
+		public ObjectType objectType;
+
+		public MovementType movementType;
+		
+		// 2D
+		public ForceMode2D forceMode2D;
+		public Vector2 force2D;
+		public Vector2 velocity2D;
+		
+		// 3D
+		public ForceMode forceMode;
+		public Vector3 force3D;
+		public Vector3 velocity3D;
+		
 		#endregion
 
 		#region UnityCalls
@@ -356,6 +372,34 @@ namespace UltimateSpawner {
 		}
 
 		#endregion
+
+		#region Movement
+
+		void ApplyMovement(GameObject spawnedObject) {
+			if (spawnedObject.GetComponent<US_MovementExtension>() == null && movementType != MovementType.None) {
+				spawnedObject.AddComponent<US_MovementExtension>();
+			}
+			else {
+				// 2D
+				if(objectType == ObjectType._2D && movementType == MovementType.Force)
+					spawnedObject.GetComponent<US_MovementExtension>().Movement(force2D, forceMode2D);
+				else if(objectType == ObjectType._2D && movementType == MovementType.Velocity)
+					spawnedObject.GetComponent<US_MovementExtension>().Movement(velocity2D);
+				// 3D
+				else if(objectType == ObjectType._3D && movementType == MovementType.Force)
+					spawnedObject.GetComponent<US_MovementExtension>().Movement(force3D, forceMode);
+				else if(objectType == ObjectType._3D && movementType == MovementType.Velocity)
+					spawnedObject.GetComponent<US_MovementExtension>().Movement(velocity3D);
+				// None
+				else if (movementType == MovementType.None)
+					spawnedObject.GetComponent<US_MovementExtension>().StopMovement();
+
+			}
+			
+			
+		}
+
+		#endregion
 	}
 
 	public enum SpawnMode {
@@ -383,6 +427,12 @@ namespace UltimateSpawner {
 	public enum ObjectType {
 		_2D,
 		_3D
+	}
+
+	public enum MovementType {
+		None,
+		Force,
+		Velocity
 	}
 	
 }

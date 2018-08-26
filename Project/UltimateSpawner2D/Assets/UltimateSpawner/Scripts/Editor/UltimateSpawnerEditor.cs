@@ -24,9 +24,6 @@ namespace UltimateSpawner {
 			
 			ultimateSpawner.objectToSpawn = (GameObject) EditorGUILayout.ObjectField("Object to Spawn",
 				ultimateSpawner.objectToSpawn, typeof(GameObject), true);
-			
-			ultimateSpawner.objectType =
-				(ObjectType) EditorGUILayout.EnumPopup("Object is", ultimateSpawner.objectType);
 						
 			GUILayout.Space(10);
 
@@ -65,31 +62,36 @@ namespace UltimateSpawner {
 			ShowPositionSettings();
 
 			ShowRotationSettings();
+
+			ShowMovementSettings();
 			
-			GUILayout.Space(5);
-			GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
-			
-			ultimateSpawner.usePoolSystem = EditorGUILayout.Toggle("Use Pooling System?", ultimateSpawner.usePoolSystem);
-			if(ultimateSpawner.usePoolSystem)
-				ShowPoolSettings();
+			ShowPoolSettings();
 			
 			serializedObject.ApplyModifiedProperties();
 		}
 
 		void ShowPoolSettings() {
 
-			GUILayout.Space(10);
+			GUILayout.Space(5);
+			GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
 
-			ultimateSpawner.poolSize = EditorGUILayout.IntField("Pool Size", ultimateSpawner.poolSize);
-			
-			ultimateSpawner.canIncreasePoolSize = EditorGUILayout.Toggle("Can increase pool size?", ultimateSpawner.canIncreasePoolSize);
+			ultimateSpawner.usePoolSystem = EditorGUILayout.Toggle("Use Pooling System?", ultimateSpawner.usePoolSystem);
+			if (ultimateSpawner.usePoolSystem) {
 
-			if (ultimateSpawner.poolMaxSize < ultimateSpawner.poolSize)
-				ultimateSpawner.poolMaxSize = ultimateSpawner.poolSize + 1;
-			
-			if(ultimateSpawner.canIncreasePoolSize)
-				ultimateSpawner.poolMaxSize = EditorGUILayout.IntField("Pool Maximum Size", ultimateSpawner.poolMaxSize);
+				GUILayout.Space(10);
 
+				ultimateSpawner.poolSize = EditorGUILayout.IntField("Pool Size", ultimateSpawner.poolSize);
+
+				ultimateSpawner.canIncreasePoolSize =
+					EditorGUILayout.Toggle("Can increase pool size?", ultimateSpawner.canIncreasePoolSize);
+
+				if (ultimateSpawner.poolMaxSize < ultimateSpawner.poolSize)
+					ultimateSpawner.poolMaxSize = ultimateSpawner.poolSize + 1;
+
+				if (ultimateSpawner.canIncreasePoolSize)
+					ultimateSpawner.poolMaxSize = EditorGUILayout.IntField("Pool Maximum Size", ultimateSpawner.poolMaxSize);
+
+			}
 		}
 
 		void ShowTimerSettings() {
@@ -202,6 +204,52 @@ namespace UltimateSpawner {
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
-		
+
+		void ShowMovementSettings() {
+
+			GUILayout.Space(5);
+
+			GUILayout.Label("Movement Settings", EditorStyles.boldLabel);
+
+			ultimateSpawner.movementType =
+				(MovementType) EditorGUILayout.EnumPopup("Movement Type", ultimateSpawner.movementType);
+
+			if (ultimateSpawner.movementType != MovementType.None){
+				GUILayout.Space(10);
+	
+				ultimateSpawner.objectType =
+					(ObjectType) EditorGUILayout.EnumPopup("Object is", ultimateSpawner.objectType);
+			}
+		if (ultimateSpawner.movementType == MovementType.Force) {
+
+				if (ultimateSpawner.objectType == ObjectType._2D) {
+					ultimateSpawner.forceMode2D =
+						(ForceMode2D) EditorGUILayout.EnumPopup("Force Mode", ultimateSpawner.forceMode2D);
+
+					ultimateSpawner.force2D = EditorGUILayout.Vector2Field("Force", ultimateSpawner.force2D);
+				}
+				else {
+					ultimateSpawner.forceMode =
+						(ForceMode) EditorGUILayout.EnumPopup("Force Mode", ultimateSpawner.forceMode);
+					
+					ultimateSpawner.force3D = EditorGUILayout.Vector3Field("Force", ultimateSpawner.force3D);
+				}
+
+
+			} else if (ultimateSpawner.movementType == MovementType.Velocity) {
+				if (ultimateSpawner.objectType == ObjectType._2D) {
+
+					ultimateSpawner.velocity2D = EditorGUILayout.Vector2Field("Velocity", ultimateSpawner.velocity2D);
+				}
+				else {
+					
+					ultimateSpawner.velocity3D = EditorGUILayout.Vector3Field("Velocity", ultimateSpawner.velocity3D);
+
+				}
+			}
+			
+			// Line Divider		
+			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+		}
 	}
 }
