@@ -10,6 +10,9 @@ namespace UltimateSpawner {
 
 		[Tooltip("Choose a Object to spawn")] 
 		public GameObject objectToSpawn;
+
+		public ObjectType objectType;
+		
 		[Tooltip("Should we use object pooling?")] 
 		public bool usePoolSystem;
 		
@@ -82,6 +85,16 @@ namespace UltimateSpawner {
 		// Target
 		public Transform targetTransform;
 		
+		#endregion
+
+		#region Rotation Setup
+
+		public SpawnRotation spawnRotation;
+
+		public float customRotationX;
+		public float customRotationY;
+		public float customRotationZ;
+
 		#endregion
 
 		#region UnityCalls
@@ -184,11 +197,19 @@ namespace UltimateSpawner {
 
 					// Position it
 					currentPoolGameObject.transform.position = GetSpawnPosition();
+
+					if (spawnRotation != SpawnRotation.ObjectOwnRotation)
+						currentPoolGameObject.transform.rotation = GetSpawnRotation();
 				}
 			}
 			// Instantiate New Object
 			else {
-				Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
+				GameObject instantiatedObject = Instantiate(objectToSpawn);
+
+				instantiatedObject.transform.position = GetSpawnPosition();
+
+				if (spawnRotation != SpawnRotation.ObjectOwnRotation)
+					instantiatedObject.transform.rotation = GetSpawnRotation();
 			}
 		}
 		
@@ -309,6 +330,32 @@ namespace UltimateSpawner {
 		
 
 		#endregion
+
+		#region Rotation
+
+		Quaternion GetSpawnRotation() {
+
+			Transform rotationTransform = new GameObject().transform;
+			
+			switch (spawnRotation) {
+					case SpawnRotation.Custom:
+						rotationTransform.Rotate(customRotationX, customRotationY, customRotationZ);
+						break;
+					case SpawnRotation.Identity:
+						rotationTransform.rotation = Quaternion.identity;
+						break;
+					case SpawnRotation.Spawner:
+						rotationTransform.rotation = transform.rotation;
+						break;
+					case SpawnRotation.ObjectOwnRotation:
+						break;
+			}
+			
+			return rotationTransform.rotation;
+
+		}
+
+		#endregion
 	}
 
 	public enum SpawnMode {
@@ -324,6 +371,18 @@ namespace UltimateSpawner {
 		Fixed,
 		Random,
 		TargetTransform
+	}
+
+	public enum SpawnRotation {
+		Identity,
+		Spawner,
+		Custom,
+		ObjectOwnRotation
+	}
+
+	public enum ObjectType {
+		_2D,
+		_3D
 	}
 	
 }

@@ -10,7 +10,8 @@ namespace UltimateSpawner {
 		private UltimateSpawner ultimateSpawner;
 
 		SerializedProperty spawnPointsList;
-
+		
+		SerializedProperty customTransform;
 		
 		public override void OnInspectorGUI() {
 			serializedObject.Update();
@@ -23,6 +24,9 @@ namespace UltimateSpawner {
 			
 			ultimateSpawner.objectToSpawn = (GameObject) EditorGUILayout.ObjectField("Object to Spawn",
 				ultimateSpawner.objectToSpawn, typeof(GameObject), true);
+			
+			ultimateSpawner.objectType =
+				(ObjectType) EditorGUILayout.EnumPopup("Object is", ultimateSpawner.objectType);
 						
 			GUILayout.Space(10);
 
@@ -59,6 +63,8 @@ namespace UltimateSpawner {
 			}
 			
 			ShowPositionSettings();
+
+			ShowRotationSettings();
 			
 			GUILayout.Space(5);
 			GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
@@ -159,6 +165,38 @@ namespace UltimateSpawner {
 			
 			} else if (ultimateSpawner.spawnAt == SpawnAt.Spawner) {
 				EditorGUILayout.HelpBox("The object will spawn at UltimateSpawner's position", MessageType.Info, true);
+			}
+			
+			// Line Divider		
+			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+		}
+
+		void ShowRotationSettings() {
+						
+			GUILayout.Space(5);
+			
+			GUILayout.Label("Rotation Settings", EditorStyles.boldLabel);
+		
+			ultimateSpawner.spawnRotation =
+				(SpawnRotation) EditorGUILayout.EnumPopup("Spawn Rotation", ultimateSpawner.spawnRotation);
+			
+			if (ultimateSpawner.spawnRotation == SpawnRotation.Identity) {
+				EditorGUILayout.HelpBox("The object will spawn with a rotation equals Quaternion.identity", MessageType.Info, true);
+			} else if (ultimateSpawner.spawnRotation == SpawnRotation.ObjectOwnRotation) {
+				EditorGUILayout.HelpBox("The object will spawn with it's current rotation", MessageType.Info, true);
+			} else if (ultimateSpawner.spawnRotation == SpawnRotation.Spawner) {
+				EditorGUILayout.HelpBox("The object will spawn with the spawner's rotation ", MessageType.Info, true);
+			} else if (ultimateSpawner.spawnRotation == SpawnRotation.Custom) {
+				EditorGUILayout.BeginHorizontal();
+				GUILayout.Label("Custom Rotation");
+
+				EditorGUIUtility.labelWidth = 15f;
+				ultimateSpawner.customRotationX = EditorGUILayout.FloatField("X", ultimateSpawner.customRotationX);
+				ultimateSpawner.customRotationY = EditorGUILayout.FloatField("Y", ultimateSpawner.customRotationY);
+				ultimateSpawner.customRotationZ = EditorGUILayout.FloatField("Z", ultimateSpawner.customRotationZ);
+				EditorGUIUtility.labelWidth = 0f;
+				
+				EditorGUILayout.EndHorizontal();
 			}
 			
 			// Line Divider		
