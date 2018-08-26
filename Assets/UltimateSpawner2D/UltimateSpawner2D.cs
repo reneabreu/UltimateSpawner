@@ -46,15 +46,26 @@ namespace UltimateSpawner2D {
 
 		#region Timer Setup
 
-		// TODO: Configure first spawn (Time or Trigger)
+		// TODO: Configure first spawn to work with some trigger too
 		[Tooltip("Time since script activation to spawn first object")] 
 		public float firstSpawnTime;
+		
+		// Fixed Configuration
 		[Tooltip("Time between spawns. (after first spawn)")] 
 		public float fixedDelayBetweenSpawns;
 
+		// Random Configuration
 		public float minDelayBetweenSpawns;
 		public float maxDelayBetweenSpawns;		
 
+		// Progressive Configuration
+		[Tooltip("Time since script activation to spawn first object")] 
+		public float startingDelayBetweenSpawns;
+		[Tooltip("")]
+		public float delayModifier;
+		[Tooltip("Since we use a countdown timer remember to use a value minor than the Starting Delay but greater than 0")] 
+		public float progressiveDelayLimit;
+			
 		#endregion
 
 		#region UnityCalls
@@ -188,7 +199,7 @@ namespace UltimateSpawner2D {
 						interval = fixedDelayBetweenSpawns;
 						break;
 					case SpawnMode.ProgressiveTime:
-						// TODO: Calculate progressive time
+						interval = ProgressiveTimer();
 						break;
 					case SpawnMode.RandomTime:
 						interval = RandomTimer();
@@ -201,12 +212,39 @@ namespace UltimateSpawner2D {
 		}
 
 		float RandomTimer() {
+			
+			// Generate random number between gap
 			float randomDelayBetweenSpawns = Random.Range(minDelayBetweenSpawns, maxDelayBetweenSpawns);
 			
 			if(Application.isEditor && ShowDebugMessages)
 				Debug.Log(string.Format("The next spawn will occur in {0} seconds", randomDelayBetweenSpawns));
 
 			return randomDelayBetweenSpawns;
+		}
+
+		float ProgressiveTimer() {
+			float progressiveDelay;
+
+			// Just in case it's reaches a number less than 0
+			if (progressiveDelayLimit < 0)
+				progressiveDelayLimit = 0;
+			
+			if (interval <= progressiveDelayLimit) {
+				progressiveDelay = progressiveDelayLimit;
+				
+				if(Application.isEditor && ShowDebugMessages)
+					Debug.Log(string.Format("The next spawn will occur in {0} seconds", progressiveDelay));
+				
+				return progressiveDelay;
+			}
+
+			// Reduce the delay
+			progressiveDelay = interval - delayModifier;
+			
+			if(Application.isEditor && ShowDebugMessages)
+				Debug.Log(string.Format("The next spawn will occur in {0} seconds", progressiveDelay));
+			
+			return progressiveDelay;
 		}
 		
 		#endregion
