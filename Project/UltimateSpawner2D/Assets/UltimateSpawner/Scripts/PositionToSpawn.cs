@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UltimateSpawner2D {
+namespace UltimateSpawner {
 
 	[CreateAssetMenu(fileName = "Position To Spawn", menuName = "UltimateSpawner2D/Position To Spawn")]
 	public class PositionToSpawn : ScriptableObject {
 
-		public Vector2 vectorPosition;
+		public Vector3 vectorPosition;
 
 	}
 

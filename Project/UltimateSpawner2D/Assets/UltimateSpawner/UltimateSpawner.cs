@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UltimateSpawner2D {
+namespace UltimateSpawner {
 
-	public class UltimateSpawner2D : MonoBehaviour {
+	public class UltimateSpawner : MonoBehaviour {
 
 		#region Spawner Basic Settings
 
@@ -178,13 +178,13 @@ namespace UltimateSpawner2D {
 				// Get Object in Pool
 				currentPoolGameObject = GetNextObject();
 
-				// Activate it
-				if (currentPoolGameObject != null)
+				if (currentPoolGameObject != null) {
+					// Activate it
 					currentPoolGameObject.SetActive(true);
-				
-				// Position it
-				currentPoolGameObject.transform.position = GetSpawnPosition();
 
+					// Position it
+					currentPoolGameObject.transform.position = GetSpawnPosition();
+				}
 			}
 			// Instantiate New Object
 			else {
