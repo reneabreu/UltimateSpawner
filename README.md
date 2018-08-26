@@ -1,5 +1,5 @@
-# UltimateSpawner2D
-UltimateSpawner2D is a simple spawn system created for Unity 2D projects
+# UltimateSpawner
+UltimateSpawner is a simple spawn system created for Unity projects.
 
 ![UltimateSpawner2D](Images/UltimateSpawner2D.gif)
 
@@ -19,8 +19,8 @@ UltimateSpawner2D is a simple spawn system created for Unity 2D projects
 ### Creating a Spawn Point
 1. Choose the folder you want to create it
 2. Right click inside it
-3. Then Create > UltimateSpawner2D > Position to Spawn
+3. Then Create > UltimateSpawner > Position to Spawn
     ![How to create a spawn point](Images/create-spawnpoint.png)
 
-## Why UltimateSpawner2D?
-It's not like the best spawn system, but I was tired of creating a new spawn system for every new project I started so I created a spawn system with everything I need. With this in mind I hope I don't need to create another spawn system again.
+## Why UltimateSpawner?
+It's not like it is the best spawn system, but I was tired of creating a new spawn system for every new project I've started. So I created a spawn system with everything I need. With this in mind I hope I don't need to create another spawn system again.
