@@ -315,12 +315,12 @@ namespace UltimateSpawner {
 
 			switch (spawnAt) {
 				case SpawnAt.Fixed:
-					Gizmos.DrawIcon(fixedPosition.vectorPosition, "Spawner.png", true);
+					Gizmos.DrawIcon(fixedPosition.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
 					break;
 				case SpawnAt.Random:
 					foreach (var spawnPoint in spawnPoints) {
 						if (spawnPoint != null)
-							Gizmos.DrawIcon(spawnPoint.vectorPosition, "Spawner.png", true);
+							Gizmos.DrawIcon(spawnPoint.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
 						
 					}
 					break;
