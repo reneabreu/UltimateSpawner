@@ -50,8 +50,10 @@ namespace UltimateSpawner2D {
 		[Tooltip("Time since script activation to spawn first object")] 
 		public float firstSpawnTime;
 		[Tooltip("Time between spawns. (after first spawn)")] 
-		public float delayBetweenSpawns;
-		
+		public float fixedDelayBetweenSpawns;
+
+		public float minDelayBetweenSpawns;
+		public float maxDelayBetweenSpawns;		
 
 		#endregion
 
@@ -183,19 +185,28 @@ namespace UltimateSpawner2D {
 
 			switch (spawnMode) {
 					case SpawnMode.FixedTime:
-						interval = delayBetweenSpawns;
+						interval = fixedDelayBetweenSpawns;
 						break;
 					case SpawnMode.ProgressiveTime:
 						// TODO: Calculate progressive time
 						break;
 					case SpawnMode.RandomTime:
-						// TODO: Get random time
+						interval = RandomTimer();
 						break;
 					default:
 						if(Application.isEditor && ShowDebugMessages)
 							Debug.Log("Elapsed was called but timer is not configured");
 						break;
 			}
+		}
+
+		float RandomTimer() {
+			float randomDelayBetweenSpawns = Random.Range(minDelayBetweenSpawns, maxDelayBetweenSpawns);
+			
+			if(Application.isEditor && ShowDebugMessages)
+				Debug.Log(string.Format("The next spawn will occur in {0} seconds", randomDelayBetweenSpawns));
+
+			return randomDelayBetweenSpawns;
 		}
 		
 		#endregion

@@ -216,14 +216,16 @@ MonoBehaviour:
   objectToSpawn: {fileID: 1205349608745998, guid: c7ccc6c9f44a09f4d84c670c7ba76cd5,
     type: 2}
   usePoolSystem: 1
-  spawnMode: 0
+  spawnMode: 2
   ShowDebugMessages: 0
   inputKeyCode: 0
   poolSize: 20
   canIncreasePoolSize: 0
   poolMaxSize: 0
   firstSpawnTime: 2
-  delayBetweenSpawns: 1.5
+  fixedDelayBetweenSpawns: 0
+  minDelayBetweenSpawns: 1
+  maxDelayBetweenSpawns: 4
 --- !u!4 &1423554692
 Transform:
   m_ObjectHideFlags: 0
