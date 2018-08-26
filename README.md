@@ -1,12 +1,30 @@
 # UltimateSpawner
 UltimateSpawner is a simple spawn system created for Unity projects.
 
-![UltimateSpawner2D](Images/UltimateSpawner2D.gif)
+![UltimateSpawner](Images/UltimateSpawner_overview.gif)
 
 ## Features
-- Different spawn modes (FixedTime, Progressive, RandomTime, External, Input)
+- Choose SpawnMode
+    - FixedTime 
+    - Progressive
+    - RandomTime
+    - External
+    - Input
+- Choose SpawnPoint 
+    - Spawner Position
+    - Fixed Position
+    - Random SpawnPoints
+    - Target Transform
+- Change spawned object's rotation
+    - Quaternion.identity
+    - Spawner Rotation
+    - Custom Rotation
+    - Object Current Rotation
+- Move the spawned object
+    - 2D/3D
+    - Rigidbody Velocity
+    - Rigidbody AddForce
 - Built-in pooling system (With easy activation)
-- Choose spawn point (Spawner Position, Fixed Position, Random Position, Target Transform)
 - Built-in timer
 - Activate/Deactivate Debug Logs
 
@@ -14,7 +32,7 @@ UltimateSpawner is a simple spawn system created for Unity projects.
 
 1. [Download the latest release](https://github.com/reneabreu/UltimateSpawner2D/releases)
 2. Import the package inside your Unity Project
-3. Play with the sample scene (:
+3. Play with the sample scenes (:
 
 ### Creating a Spawn Point
 1. Choose the folder you want to create it
