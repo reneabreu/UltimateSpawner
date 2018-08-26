@@ -23,19 +23,18 @@ namespace UltimateSpawner {
 			
 			ultimateSpawner.objectToSpawn = (GameObject) EditorGUILayout.ObjectField("Object to Spawn",
 				ultimateSpawner.objectToSpawn, typeof(GameObject), true);
-			
-			ultimateSpawner.spawnMode =
-				(SpawnMode) EditorGUILayout.EnumPopup("Spawn Mode", ultimateSpawner.spawnMode);
-
-			
-			ultimateSpawner.usePoolSystem = EditorGUILayout.Toggle("Use Pooling System?", ultimateSpawner.usePoolSystem);
-			
+						
 			GUILayout.Space(10);
 
 			ultimateSpawner.ShowDebugMessages = EditorGUILayout.Toggle("Show Debug Log?", ultimateSpawner.ShowDebugMessages);
 
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+			GUILayout.Space(5);
+
+			GUILayout.Label("Spawn Settings", EditorStyles.boldLabel);
+			ultimateSpawner.spawnMode =
+				(SpawnMode) EditorGUILayout.EnumPopup("Spawn Mode", ultimateSpawner.spawnMode);
 			
 			if (ultimateSpawner.spawnMode == SpawnMode.Input) {
 				
@@ -45,23 +44,35 @@ namespace UltimateSpawner {
 				
 				ultimateSpawner.inputKeyCode =
 					(KeyCode) EditorGUILayout.EnumPopup("Input KeyCode", ultimateSpawner.inputKeyCode);
+				
+				// Line Divider		
+				GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 			} else if (ultimateSpawner.spawnMode == SpawnMode.External) {
+				
 				EditorGUILayout.HelpBox("Currently you can call the public method Spawn() from another script", MessageType.Info, true);
+				
+				// Line Divider		
+				GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+				
 			} else {
 				ShowTimerSettings();
 			}
+			
+			ShowPositionSettings();
+			
+			GUILayout.Space(5);
+			GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
+			
+			ultimateSpawner.usePoolSystem = EditorGUILayout.Toggle("Use Pooling System?", ultimateSpawner.usePoolSystem);
 			if(ultimateSpawner.usePoolSystem)
 				ShowPoolSettings();
-
-			ShowPositionSettings();
 			
 			serializedObject.ApplyModifiedProperties();
 		}
 
 		void ShowPoolSettings() {
+
 			GUILayout.Space(10);
-			
-			GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
 
 			ultimateSpawner.poolSize = EditorGUILayout.IntField("Pool Size", ultimateSpawner.poolSize);
 			
@@ -104,18 +115,20 @@ namespace UltimateSpawner {
 					ultimateSpawner.progressiveDelayLimit = 0;
 			}
 
+			// Line Divider		
+			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
 
 		void ShowPositionSettings() {
 			
 			spawnPointsList = serializedObject.FindProperty("spawnPoints");
 		
-			GUILayout.Space(10);
+			GUILayout.Space(5);
 			
 			GUILayout.Label("Position Settings", EditorStyles.boldLabel);
 		
 			ultimateSpawner.spawnAt =
-				(SpawnAt) EditorGUILayout.EnumPopup("Spawn Mode", ultimateSpawner.spawnAt);
+				(SpawnAt) EditorGUILayout.EnumPopup("Spawn At", ultimateSpawner.spawnAt);
 		
 			
 			if (ultimateSpawner.spawnAt == SpawnAt.Fixed) {
@@ -148,6 +161,8 @@ namespace UltimateSpawner {
 				EditorGUILayout.HelpBox("The object will spawn at UltimateSpawner's position", MessageType.Info, true);
 			}
 			
+			// Line Divider		
+			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
 		
 	}
