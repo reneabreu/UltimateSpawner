@@ -216,36 +216,49 @@ MonoBehaviour:
   objectToSpawn: {fileID: 1205349608745998, guid: c7ccc6c9f44a09f4d84c670c7ba76cd5,
     type: 2}
   usePoolSystem: 1
-  spawnMode: 0
+  spawnMode: 4
   ShowDebugMessages: 1
   inputKeyCode: 0
   poolSize: 20
-  canIncreasePoolSize: 0
+  canIncreasePoolSize: 1
   poolMaxSize: 21
   firstSpawnTime: 1
-  fixedDelayBetweenSpawns: 0
+  fixedDelayBetweenSpawns: 1.5
   minDelayBetweenSpawns: 1
   maxDelayBetweenSpawns: 4
   startingDelayBetweenSpawns: 0
   delayModifier: 0
   progressiveDelayLimit: 0
-  spawnAt: 3
+  spawnAt: 1
+  showGizmos: 0
+  spawnPointEnum: {fileID: 11400000, guid: 013d835783e2bf046a61c9c2dda44328, type: 2}
+  selectedSpawnPointEnum: 1
   fixedPosition: {fileID: 11400000, guid: 3f6d27a05097cd0449a1733126fd4789, type: 2}
   spawnPoints:
   - {fileID: 11400000, guid: 92b6b105eaefe21419df5b4536734a3f, type: 2}
   - {fileID: 11400000, guid: 0f74f1087b59b194ba217c36b4db0ae3, type: 2}
   - {fileID: 11400000, guid: 954b5e639ffff694cb3bfe8a6e7c298e, type: 2}
   - {fileID: 11400000, guid: e6055e51826c80747afd5a2686332f34, type: 2}
+  positionEnum: {fileID: 11400000, guid: 65c77474a4a11874fb0d44ed3afd6ae0, type: 2}
+  selectedPositionEnum: 1
+  xEnum: {fileID: 0}
+  selectedXEnum: 1
+  fixedX: 0
+  randomFixedX:
+  - 0
+  - 0
+  randomRangeMinX: 0
+  randomRangeMaxX: 0
   targetTransform: {fileID: 519420032}
-  spawnRotation: 0
+  spawnRotation: 2
   customRotationX: 0
   customRotationY: 0
   customRotationZ: 0
-  objectType: 0
+  objectType: 1
   movementType: 0
-  forceMode2D: 0
+  forceMode2D: 1
   force2D: {x: 0, y: 0}
-  velocity2D: {x: 0, y: 0}
+  velocity2D: {x: 5, y: 0}
   forceMode: 0
   force3D: {x: 0, y: 0, z: 0}
   velocity3D: {x: 0, y: 0, z: 0}

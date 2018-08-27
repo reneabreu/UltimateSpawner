@@ -6,6 +6,12 @@ namespace UltimateSpawner {
 
 	public class UltimateSpawner : MonoBehaviour {
 
+		#region UltimateSpawner Config
+		
+		private ScriptableUSEnum Fixed, RandomFixed, RandomRange;
+		
+		#endregion
+
 		#region Spawner Basic Settings
 
 		[Tooltip("Choose a Object to spawn")] 
@@ -71,15 +77,49 @@ namespace UltimateSpawner {
 		#endregion
 
 		#region Position Setup
-
+		
+		// Basic Setup
 		public SpawnAt spawnAt;
+
+		public bool showGizmos;
+
+		// Advanced setup
+		
+		/** SpawnPoint **/
+		public ScriptableUSEnumList spawnPointEnum;
+		public int selectedSpawnPointEnum = 0;
 		
 		// Fixed
-		public PositionToSpawn fixedPosition;
+		public SpawnPoint fixedSpawnPoint;
 		
-		// Random
-		public List<PositionToSpawn> spawnPoints;
-
+		// Random Fixed
+		public List<SpawnPoint> RandomSpawnPoints;
+		
+		/** Position **/
+		public ScriptableUSEnumList positionEnum;
+		public int selectedPositionEnum;
+		
+		// X
+		public int selectedXEnum;
+		public float fixedX;
+		public List<float> randomFixedX;
+		public float randomRangeMinX;
+		public float randomRangeMaxX;
+		
+		// Y
+		public int selectedYEnum;
+		public float fixedY;
+		public List<float> randomFixedY;
+		public float randomRangeMinY;
+		public float randomRangeMaxY;
+		
+		// Z
+		public int selectedZEnum;
+		public float fixedZ;
+		public List<float> randomFixedZ;
+		public float randomRangeMinZ;
+		public float randomRangeMaxZ;
+		
 		// Target
 		public Transform targetTransform;
 		
@@ -114,6 +154,12 @@ namespace UltimateSpawner {
 		#endregion
 
 		#region UnityCalls
+		
+		#if UNITY_EDITOR
+		private void OnValidate() {
+			SetEnum();
+		}
+		#endif
 
 		void Awake() {
 			if(usePoolSystem)
@@ -313,38 +359,70 @@ namespace UltimateSpawner {
 
 		void OnDrawGizmos() {
 
-			switch (spawnAt) {
-				case SpawnAt.Fixed:
-					Gizmos.DrawIcon(fixedPosition.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
-					break;
-				case SpawnAt.Random:
-					foreach (var spawnPoint in spawnPoints) {
-						if (spawnPoint != null)
-							Gizmos.DrawIcon(spawnPoint.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
-						
+			if (showGizmos) {
+				// SpawnPoint
+				if (spawnAt == SpawnAt.SpawnPoint) {
+
+					if (spawnPointEnum.list[selectedSpawnPointEnum] == Fixed) {
+						Gizmos.DrawIcon(fixedSpawnPoint.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
+
 					}
-					break;
+
+					else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
+						foreach (var spawnPoint in RandomSpawnPoints) {
+							if (spawnPoint != null)
+								Gizmos.DrawIcon(spawnPoint.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
+						}
+					}
+
+				}
 			}
 		}
 
 		Vector3 GetSpawnPosition() {
-			switch (spawnAt) {
-					case SpawnAt.Fixed:
-						return fixedPosition.vectorPosition;
-						break;
-					case SpawnAt.Spawner:
-						return transform.position;
-						break;
-					case SpawnAt.Random:
-						int randomSpawnpoint = Random.Range(0, spawnPoints.Count);
-						return spawnPoints[randomSpawnpoint].vectorPosition;
-						break;
-					case SpawnAt.TargetTransform:
-						return targetTransform.position;
-						break;
+//			switch (spawnAt) {
+//					case SpawnAt.Fixed:
+//						return fixedPosition.vectorPosition;
+//						break;
+//					case SpawnAt.Spawner:
+//						break;
+//					case SpawnAt.Random:
+//						int randomSpawnpoint = Random.Range(0, spawnPoints.Count);
+//						return spawnPoints[randomSpawnpoint].vectorPosition;
+//						break;
+//					case SpawnAt.TargetTransform:
+//						
+//						break;
+//			}
+			// Spawner
+			if (spawnAt == SpawnAt.Spawner) {
+				return transform.position;
+			} 
+			// Transform
+			else if (spawnAt == SpawnAt.TargetTransform) {
+				return targetTransform.position;
+			} 
+			// SpawnPoint
+			else if (spawnAt == SpawnAt.SpawnPoint) {
+
+				if (spawnPointEnum.list[selectedSpawnPointEnum] == Fixed) {
+					return fixedSpawnPoint.vectorPosition;
+				}
+
+				else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
+					
+				}
+
 			}
+			// Position
+			else if (spawnAt == SpawnAt.Position) {
+				
+			} 
+			
 			if(Application.isEditor && ShowDebugMessages)
 				Debug.Log("Something went wrong and the position is null");
+			
+			// In case of null return at (0,0,0)
 			return Vector3.zero;
 		}
 		
@@ -380,27 +458,40 @@ namespace UltimateSpawner {
 		#region Movement
 
 		void ApplyMovement(GameObject spawnedObject) {
-			if (spawnedObject.GetComponent<US_MovementExtension>() == null && movementType != MovementType.None) {
-				spawnedObject.AddComponent<US_MovementExtension>();
+			if (spawnedObject.GetComponent<USExtension_Movement>() == null && movementType != MovementType.None) {
+				spawnedObject.AddComponent<USExtension_Movement>();
 			}
 			else {
 				// 2D
 				if(objectType == ObjectType._2D && movementType == MovementType.Force)
-					spawnedObject.GetComponent<US_MovementExtension>().Movement(force2D, forceMode2D);
+					spawnedObject.GetComponent<USExtension_Movement>().Movement(force2D, forceMode2D);
 				else if(objectType == ObjectType._2D && movementType == MovementType.Velocity)
-					spawnedObject.GetComponent<US_MovementExtension>().Movement(velocity2D);
+					spawnedObject.GetComponent<USExtension_Movement>().Movement(velocity2D);
 				// 3D
 				else if(objectType == ObjectType._3D && movementType == MovementType.Force)
-					spawnedObject.GetComponent<US_MovementExtension>().Movement(force3D, forceMode);
+					spawnedObject.GetComponent<USExtension_Movement>().Movement(force3D, forceMode);
 				else if(objectType == ObjectType._3D && movementType == MovementType.Velocity)
-					spawnedObject.GetComponent<US_MovementExtension>().Movement(velocity3D);
+					spawnedObject.GetComponent<USExtension_Movement>().Movement(velocity3D);
 				// None
 				else if (movementType == MovementType.None)
-					spawnedObject.GetComponent<US_MovementExtension>().StopMovement();
+					spawnedObject.GetComponent<USExtension_Movement>().StopMovement();
 
 			}
 			
 			
+		}
+
+		#endregion
+
+		#region UltimateSpawner Configuration
+
+		public void SetEnum() {
+			spawnPointEnum = Resources.Load<ScriptableUSEnumList>("ConfigFiles/EnumLists/SpawnPointEnum");
+			positionEnum = Resources.Load<ScriptableUSEnumList>("ConfigFiles/EnumLists/PositionEnum");
+			
+			Fixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/Fixed");
+			RandomFixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomFixed");
+			RandomRange = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomRange");
 		}
 
 		#endregion
@@ -416,8 +507,8 @@ namespace UltimateSpawner {
 
 	public enum SpawnAt {
 		Spawner,
-		Fixed,
-		Random,
+		SpawnPoint,
+		Position,
 		TargetTransform
 	}
 

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace UltimateSpawner {
 
-	[CreateAssetMenu(fileName = "Position To Spawn", menuName = "UltimateSpawner/Position To Spawn")]
-	public class PositionToSpawn : ScriptableObject {
+	[CreateAssetMenu(fileName = "Spawn Point", menuName = "UltimateSpawner/Spawn Point")]
+	public class SpawnPoint : ScriptableObject {
 
 		public Vector3 vectorPosition;
 

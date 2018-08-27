@@ -11,9 +11,23 @@ namespace UltimateSpawner {
 
 		SerializedProperty spawnPointsList;
 		
+		// Position Lists
+		SerializedProperty randomFixedX;
+		SerializedProperty randomFixedY;
+		SerializedProperty randomFixedZ;
+		
 		SerializedProperty customTransform;
+
+		private ScriptableUSEnum Fixed, RandomFixed, RandomRange;
+
+		void OnEnable() {
+			Fixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/Fixed");
+			RandomFixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomFixed");
+			RandomRange = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomRange");
+		}
 		
 		public override void OnInspectorGUI() {
+
 			serializedObject.Update();
 			
 			ultimateSpawner = (UltimateSpawner) target;
@@ -126,10 +140,18 @@ namespace UltimateSpawner {
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
+		
+		string[] spawnPointStrings, positionStrings;
+		
+		bool showX, showY, showZ;
+		string status = "Select a GameObject";
 
 		void ShowPositionSettings() {
 			
 			spawnPointsList = serializedObject.FindProperty("spawnPoints");
+			randomFixedX = serializedObject.FindProperty("randomFixedX");
+			randomFixedY = serializedObject.FindProperty("randomFixedY");
+			randomFixedZ = serializedObject.FindProperty("randomFixedZ");
 		
 			GUILayout.Space(5);
 			
@@ -137,27 +159,199 @@ namespace UltimateSpawner {
 		
 			ultimateSpawner.spawnAt =
 				(SpawnAt) EditorGUILayout.EnumPopup("Spawn At", ultimateSpawner.spawnAt);
-		
 			
-			if (ultimateSpawner.spawnAt == SpawnAt.Fixed) {
-				GUILayout.Label("Fixed Spawn Point");
+			ultimateSpawner.showGizmos = EditorGUILayout.Toggle("Show Gizmos?", ultimateSpawner.showGizmos);
+
+			
+			if (ultimateSpawner.spawnAt == SpawnAt.SpawnPoint) {
 				
-				ultimateSpawner.fixedPosition = (PositionToSpawn) EditorGUILayout.ObjectField("Spawn Point",
-					ultimateSpawner.fixedPosition, typeof(PositionToSpawn), true);
+				if (ultimateSpawner.spawnPointEnum != null) {
+
+					spawnPointStrings = new string[ultimateSpawner.spawnPointEnum.list.Count];
+					for (int i = 0; i < ultimateSpawner.spawnPointEnum.list.Count; i++) {
+						spawnPointStrings[i] = ultimateSpawner.spawnPointEnum.list[i].name;
+					}
+					
+					GUILayout.Space(10);
+			
+					GUILayout.Label("SpawnPoint Settings", EditorStyles.boldLabel);
+					ultimateSpawner.selectedSpawnPointEnum = EditorGUILayout.Popup("SpawnPoint Type",ultimateSpawner.selectedSpawnPointEnum, spawnPointStrings);
+				}
+				else {
+					ultimateSpawner.SetEnum();
+				}
 				
-			} else if (ultimateSpawner.spawnAt == SpawnAt.Random) {
 				
-				EditorGUILayout.PropertyField(spawnPointsList, new GUIContent("Random Spawn Points"));
+
+				if (ultimateSpawner.spawnPointEnum.list[ultimateSpawner.selectedSpawnPointEnum] == Fixed) {
+
+					ultimateSpawner.fixedSpawnPoint = (SpawnPoint) EditorGUILayout.ObjectField("Fixed Spawn Point",
+						ultimateSpawner.fixedSpawnPoint, typeof(SpawnPoint), true);
+				} else if (ultimateSpawner.spawnPointEnum.list[ultimateSpawner.selectedSpawnPointEnum] == RandomFixed) {
+					
+					EditorGUILayout.PropertyField(spawnPointsList, new GUIContent("Random Spawn Points"));
 				
-				// List
-				EditorGUI.indentLevel += 1;
-				if (spawnPointsList.isExpanded) {
-					EditorGUILayout.PropertyField(spawnPointsList.FindPropertyRelative("Array.size"));
-					for (int i = 0; i < spawnPointsList.arraySize; i++) {
-						EditorGUILayout.PropertyField(spawnPointsList.GetArrayElementAtIndex(i));
+					// List
+					EditorGUI.indentLevel += 1;
+					if (spawnPointsList.isExpanded) {
+						EditorGUILayout.PropertyField(spawnPointsList.FindPropertyRelative("Array.size"));
+						for (int i = 0; i < spawnPointsList.arraySize; i++) {
+							EditorGUILayout.PropertyField(spawnPointsList.GetArrayElementAtIndex(i));
+						}
+					}
+					EditorGUI.indentLevel -= 1;
+					
+				}
+
+			} else if (ultimateSpawner.spawnAt == SpawnAt.Position) {
+				
+				GUILayout.Space(10);
+			
+				GUILayout.Label("Position Settings", EditorStyles.boldLabel);
+	
+				// X
+				showX = EditorGUILayout.Foldout(showX, "X Setup");
+				if (showX) {
+
+					if (ultimateSpawner.positionEnum != null) {
+
+						positionStrings = new string[ultimateSpawner.positionEnum.list.Count];
+						for (int i = 0; i < ultimateSpawner.positionEnum.list.Count; i++) {
+							positionStrings[i] = ultimateSpawner.positionEnum.list[i].name;
+						}
+
+						ultimateSpawner.selectedXEnum = EditorGUILayout.Popup("X Type", ultimateSpawner.selectedXEnum, positionStrings);
+					}
+					else {
+						ultimateSpawner.SetEnum();
+					}
+
+					if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedXEnum] == Fixed)
+						ultimateSpawner.fixedX = EditorGUILayout.FloatField("Fixed X Position", ultimateSpawner.fixedX);
+					else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedXEnum] == RandomFixed) {
+						EditorGUI.indentLevel += 1;
+						EditorGUILayout.PropertyField(randomFixedX, new GUIContent("Random Fixed X"));
+						// List
+						EditorGUI.indentLevel += 1;
+						if (randomFixedX.isExpanded) {
+							EditorGUILayout.PropertyField(randomFixedX.FindPropertyRelative("Array.size"));
+							for (int i = 0; i < randomFixedX.arraySize; i++) {
+								EditorGUILayout.PropertyField(randomFixedX.GetArrayElementAtIndex(i));
+							}
+						}
+
+						EditorGUI.indentLevel -= 1;
+						EditorGUI.indentLevel -= 1;
+
+					}
+					else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedXEnum] == RandomRange) {
+
+						EditorGUILayout.BeginHorizontal();
+						GUILayout.Label("X Random Range");
+						EditorGUIUtility.labelWidth = 30f;
+						ultimateSpawner.randomRangeMinX = EditorGUILayout.FloatField("Min", ultimateSpawner.randomRangeMinX);
+						ultimateSpawner.randomRangeMaxX = EditorGUILayout.FloatField("Max", ultimateSpawner.randomRangeMaxX);
+						EditorGUIUtility.labelWidth = 0f;
+						EditorGUILayout.EndHorizontal();
+
 					}
 				}
-				EditorGUI.indentLevel -= 1;
+
+				// Y
+				showY = EditorGUILayout.Foldout(showY, "Y Setup");
+				if (showY) {
+
+					if (ultimateSpawner.positionEnum != null) {
+
+						positionStrings = new string[ultimateSpawner.positionEnum.list.Count];
+						for (int i = 0; i < ultimateSpawner.positionEnum.list.Count; i++) {
+							positionStrings[i] = ultimateSpawner.positionEnum.list[i].name;
+						}
+
+						ultimateSpawner.selectedYEnum = EditorGUILayout.Popup("Y Type", ultimateSpawner.selectedYEnum, positionStrings);
+					}
+					else {
+						ultimateSpawner.SetEnum();
+					}
+
+					if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedYEnum] == Fixed)
+						ultimateSpawner.fixedY = EditorGUILayout.FloatField("Fixed Y Position", ultimateSpawner.fixedY);
+					else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedYEnum] == RandomFixed) {
+						EditorGUI.indentLevel += 1;
+						EditorGUILayout.PropertyField(randomFixedY, new GUIContent("Random Fixed Y"));
+						// List
+						EditorGUI.indentLevel += 1;
+						if (randomFixedY.isExpanded) {
+							EditorGUILayout.PropertyField(randomFixedY.FindPropertyRelative("Array.size"));
+							for (int i = 0; i < randomFixedY.arraySize; i++) {
+								EditorGUILayout.PropertyField(randomFixedY.GetArrayElementAtIndex(i));
+							}
+						}
+
+						EditorGUI.indentLevel -= 1;
+						EditorGUI.indentLevel -= 1;
+
+					}
+					else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedYEnum] == RandomRange) {
+
+						EditorGUILayout.BeginHorizontal();
+						GUILayout.Label("Y Random Range");
+						EditorGUIUtility.labelWidth = 30f;
+						ultimateSpawner.randomRangeMinY = EditorGUILayout.FloatField("Min", ultimateSpawner.randomRangeMinY);
+						ultimateSpawner.randomRangeMaxY = EditorGUILayout.FloatField("Max", ultimateSpawner.randomRangeMaxY);
+						EditorGUIUtility.labelWidth = 0f;
+						EditorGUILayout.EndHorizontal();
+
+					}
+
+				}
+
+				// Z
+				showZ = EditorGUILayout.Foldout(showZ, "Z Setup");
+				if (showZ) {
+			
+					if (ultimateSpawner.positionEnum != null) {
+
+						positionStrings = new string[ultimateSpawner.positionEnum.list.Count];
+						for (int i = 0; i < ultimateSpawner.positionEnum.list.Count; i++) {
+							positionStrings[i] = ultimateSpawner.positionEnum.list[i].name;
+						}
+			
+						ultimateSpawner.selectedZEnum = EditorGUILayout.Popup("Z Type",ultimateSpawner.selectedZEnum, positionStrings);
+					}
+					else {
+						ultimateSpawner.SetEnum();
+					}
+			
+					if(ultimateSpawner.positionEnum.list[ultimateSpawner.selectedZEnum] == Fixed)
+						ultimateSpawner.fixedZ = EditorGUILayout.FloatField("Fixed Z Position", ultimateSpawner.fixedZ);
+					else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedXEnum] == RandomFixed) {
+						EditorGUI.indentLevel += 1;
+						EditorGUILayout.PropertyField(randomFixedZ, new GUIContent("Random Fixed Z"));
+						// List
+						EditorGUI.indentLevel += 1;
+						if (randomFixedZ.isExpanded) {
+							EditorGUILayout.PropertyField(randomFixedZ.FindPropertyRelative("Array.size"));
+							for (int i = 0; i < randomFixedZ.arraySize; i++) {
+								EditorGUILayout.PropertyField(randomFixedZ.GetArrayElementAtIndex(i));
+							}
+						}
+						EditorGUI.indentLevel -= 1;
+						EditorGUI.indentLevel -= 1;
+
+					} else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedXEnum] == RandomRange) {
+
+						EditorGUILayout.BeginHorizontal();
+						GUILayout.Label("Z Random Range");
+						EditorGUIUtility.labelWidth = 30f;
+						ultimateSpawner.randomRangeMinZ = EditorGUILayout.FloatField("Min", ultimateSpawner.randomRangeMinZ);
+						ultimateSpawner.randomRangeMaxZ = EditorGUILayout.FloatField("Max", ultimateSpawner.randomRangeMaxZ);
+						EditorGUIUtility.labelWidth = 0f;
+						EditorGUILayout.EndHorizontal();
+
+					}
+
+				}
 
 			} else if (ultimateSpawner.spawnAt == SpawnAt.TargetTransform) {
 				GUILayout.Label("Transform Spawn Point");
@@ -168,6 +362,7 @@ namespace UltimateSpawner {
 			} else if (ultimateSpawner.spawnAt == SpawnAt.Spawner) {
 				EditorGUILayout.HelpBox("The object will spawn at UltimateSpawner's position", MessageType.Info, true);
 			}
+			
 			
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
