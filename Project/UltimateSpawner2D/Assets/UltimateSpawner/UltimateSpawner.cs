@@ -93,7 +93,7 @@ namespace UltimateSpawner {
 		public SpawnPoint fixedSpawnPoint;
 		
 		// Random Fixed
-		public List<SpawnPoint> RandomSpawnPoints;
+		public List<SpawnPoint> randomSpawnPoints;
 		
 		/** Position **/
 		public ScriptableUSEnumList positionEnum;
@@ -369,7 +369,7 @@ namespace UltimateSpawner {
 					}
 
 					else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
-						foreach (var spawnPoint in RandomSpawnPoints) {
+						foreach (var spawnPoint in randomSpawnPoints) {
 							if (spawnPoint != null)
 								Gizmos.DrawIcon(spawnPoint.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
 						}
@@ -410,7 +410,8 @@ namespace UltimateSpawner {
 				}
 
 				else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
-					
+					int randomSpawnpoint = Random.Range(0, randomSpawnPoints.Count);
+					return randomSpawnPoints[randomSpawnpoint].vectorPosition;
 				}
 
 			}

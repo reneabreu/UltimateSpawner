@@ -229,14 +229,42 @@ MonoBehaviour:
   startingDelayBetweenSpawns: 0
   delayModifier: 0
   progressiveDelayLimit: 0
-  spawnAt: 3
-  fixedPosition: {fileID: 11400000, guid: 3f6d27a05097cd0449a1733126fd4789, type: 2}
-  spawnPoints:
-  - {fileID: 11400000, guid: 92b6b105eaefe21419df5b4536734a3f, type: 2}
-  - {fileID: 11400000, guid: 0f74f1087b59b194ba217c36b4db0ae3, type: 2}
-  - {fileID: 11400000, guid: 954b5e639ffff694cb3bfe8a6e7c298e, type: 2}
-  - {fileID: 11400000, guid: e6055e51826c80747afd5a2686332f34, type: 2}
+  spawnAt: 1
+  showGizmos: 0
+  spawnPointEnum: {fileID: 11400000, guid: 013d835783e2bf046a61c9c2dda44328, type: 2}
+  selectedSpawnPointEnum: 0
+  fixedSpawnPoint: {fileID: 0}
+  randomSpawnPoints: []
+  positionEnum: {fileID: 11400000, guid: 65c77474a4a11874fb0d44ed3afd6ae0, type: 2}
+  selectedPositionEnum: 0
+  selectedXEnum: 0
+  fixedX: 0
+  randomFixedX: []
+  randomRangeMinX: 0
+  randomRangeMaxX: 0
+  selectedYEnum: 0
+  fixedY: 0
+  randomFixedY: []
+  randomRangeMinY: 0
+  randomRangeMaxY: 0
+  selectedZEnum: 0
+  fixedZ: 0
+  randomFixedZ: []
+  randomRangeMinZ: 0
+  randomRangeMaxZ: 0
   targetTransform: {fileID: 519420032}
+  spawnRotation: 0
+  customRotationX: 0
+  customRotationY: 0
+  customRotationZ: 0
+  objectType: 0
+  movementType: 0
+  forceMode2D: 0
+  force2D: {x: 0, y: 0}
+  velocity2D: {x: 0, y: 0}
+  forceMode: 0
+  force3D: {x: 0, y: 0, z: 0}
+  velocity3D: {x: 0, y: 0, z: 0}
 --- !u!4 &1423554692
 Transform:
   m_ObjectHideFlags: 0

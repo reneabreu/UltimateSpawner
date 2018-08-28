@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace UltimateSpawner {
 	[CustomEditor(typeof(UltimateSpawner))]
@@ -27,10 +29,13 @@ namespace UltimateSpawner {
 		}
 		
 		public override void OnInspectorGUI() {
-
-			serializedObject.Update();
 			
 			ultimateSpawner = (UltimateSpawner) target;
+			
+			spawnPointsList = serializedObject.FindProperty("randomSpawnPoints");
+			randomFixedX = serializedObject.FindProperty("randomFixedX");
+			randomFixedY = serializedObject.FindProperty("randomFixedY");
+			randomFixedZ = serializedObject.FindProperty("randomFixedZ");
 			
 			GUILayout.Label("Basic Settings", EditorStyles.boldLabel);
 						
@@ -81,7 +86,12 @@ namespace UltimateSpawner {
 			
 			ShowPoolSettings();
 			
-			serializedObject.ApplyModifiedProperties();
+			spawnPointsList.serializedObject.ApplyModifiedProperties();
+			randomFixedX.serializedObject.ApplyModifiedProperties();
+			randomFixedY.serializedObject.ApplyModifiedProperties();
+			randomFixedZ.serializedObject.ApplyModifiedProperties();
+
+			EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 		}
 
 		void ShowPoolSettings() {
@@ -147,11 +157,6 @@ namespace UltimateSpawner {
 		string status = "Select a GameObject";
 
 		void ShowPositionSettings() {
-			
-			spawnPointsList = serializedObject.FindProperty("spawnPoints");
-			randomFixedX = serializedObject.FindProperty("randomFixedX");
-			randomFixedY = serializedObject.FindProperty("randomFixedY");
-			randomFixedZ = serializedObject.FindProperty("randomFixedZ");
 		
 			GUILayout.Space(5);
 			
@@ -366,6 +371,11 @@ namespace UltimateSpawner {
 			
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+			
+			spawnPointsList.serializedObject.Update();
+			randomFixedX.serializedObject.Update();
+			randomFixedY.serializedObject.Update();
+			randomFixedZ.serializedObject.Update();
 		}
 
 		void ShowRotationSettings() {
