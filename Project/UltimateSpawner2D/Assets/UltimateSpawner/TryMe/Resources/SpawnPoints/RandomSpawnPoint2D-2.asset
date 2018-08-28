@@ -9,6 +9,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d510ffcd755e65e4ea3d9b71e66cb908, type: 3}
-  m_Name: FixedPosition
+  m_Name: RandomSpawnPoint2D-2
   m_EditorClassIdentifier: 
-  vectorPosition: {x: 0, y: 5.5}
+  vectorPosition: {x: 0, y: 0, z: 0}
