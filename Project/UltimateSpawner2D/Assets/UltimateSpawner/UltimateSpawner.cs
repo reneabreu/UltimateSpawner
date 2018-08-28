@@ -380,20 +380,7 @@ namespace UltimateSpawner {
 		}
 
 		Vector3 GetSpawnPosition() {
-//			switch (spawnAt) {
-//					case SpawnAt.Fixed:
-//						return fixedPosition.vectorPosition;
-//						break;
-//					case SpawnAt.Spawner:
-//						break;
-//					case SpawnAt.Random:
-//						int randomSpawnpoint = Random.Range(0, spawnPoints.Count);
-//						return spawnPoints[randomSpawnpoint].vectorPosition;
-//						break;
-//					case SpawnAt.TargetTransform:
-//						
-//						break;
-//			}
+			
 			// Spawner
 			if (spawnAt == SpawnAt.Spawner) {
 				return transform.position;
@@ -418,6 +405,52 @@ namespace UltimateSpawner {
 			// Position
 			else if (spawnAt == SpawnAt.Position) {
 				
+				// Create vector to return
+				Vector3 spawnPosition = new Vector3();
+				
+				// X 
+				// fixed
+				if (positionEnum.list[selectedXEnum] == Fixed) {
+					spawnPosition.x = fixedX;
+				}
+				// Random Range
+				else if (positionEnum.list[selectedXEnum] == RandomRange) {
+					spawnPosition.x = Random.Range(randomRangeMinX, randomRangeMaxX);
+				}
+				// Random Fixed
+				else if (positionEnum.list[selectedXEnum] == RandomFixed) {
+					spawnPosition.x = randomFixedX[Random.Range(0, randomFixedX.Count)];
+				}
+				
+				// Y
+				// fixed
+				if (positionEnum.list[selectedYEnum] == Fixed) {
+					spawnPosition.y = fixedY;
+				}
+				// Random Range
+				else if (positionEnum.list[selectedYEnum] == RandomRange) {
+					spawnPosition.y = Random.Range(randomRangeMinY, randomRangeMaxY);
+				}
+				// Random Fixed
+				else if (positionEnum.list[selectedYEnum] == RandomFixed) {
+					spawnPosition.y = randomFixedY[Random.Range(0, randomFixedY.Count)];
+				}
+				
+				// Z
+				// fixed
+				if (positionEnum.list[selectedZEnum] == Fixed) {
+					spawnPosition.z = fixedZ;
+				}
+				// Random Range
+				else if (positionEnum.list[selectedZEnum] == RandomRange) {
+					spawnPosition.z = Random.Range(randomRangeMinZ, randomRangeMaxZ);
+				}
+				// Random Fixed
+				else if (positionEnum.list[selectedZEnum] == RandomFixed) {
+					spawnPosition.z = randomFixedZ[Random.Range(0, randomFixedZ.Count)];
+				}
+
+				return spawnPosition;
 			} 
 			
 			if(Application.isEditor && ShowDebugMessages)
