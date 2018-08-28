@@ -11,32 +11,27 @@ namespace UltimateSpawner {
 		
 		private UltimateSpawner ultimateSpawner;
 
-		SerializedProperty spawnPointsList;
+//		SerializedProperty spawnPointsList;
+//		// Position Lists
+//		SerializedProperty randomFixedX;
+//		SerializedProperty randomFixedY;
+//		SerializedProperty randomFixedZ;
 		
-		// Position Lists
-		SerializedProperty randomFixedX;
-		SerializedProperty randomFixedY;
-		SerializedProperty randomFixedZ;
-		
-		SerializedProperty customTransform;
-
 		private ScriptableUSEnum Fixed, RandomFixed, RandomRange;
 
 		void OnEnable() {
 			Fixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/Fixed");
 			RandomFixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomFixed");
 			RandomRange = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomRange");
+
 		}
 		
 		public override void OnInspectorGUI() {
 			
 			ultimateSpawner = (UltimateSpawner) target;
 			
-			spawnPointsList = serializedObject.FindProperty("randomSpawnPoints");
-			randomFixedX = serializedObject.FindProperty("randomFixedX");
-			randomFixedY = serializedObject.FindProperty("randomFixedY");
-			randomFixedZ = serializedObject.FindProperty("randomFixedZ");
-			
+			serializedObject.Update();
+
 			GUILayout.Label("Basic Settings", EditorStyles.boldLabel);
 						
 //			EditorGUILayout.PropertyField(background, new GUIContent("Background Color"));
@@ -86,12 +81,16 @@ namespace UltimateSpawner {
 			
 			ShowPoolSettings();
 			
-			spawnPointsList.serializedObject.ApplyModifiedProperties();
-			randomFixedX.serializedObject.ApplyModifiedProperties();
-			randomFixedY.serializedObject.ApplyModifiedProperties();
-			randomFixedZ.serializedObject.ApplyModifiedProperties();
+//			EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 
-			EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+//			EditorFix.SetObjectDirty(ultimateSpawner);
+
+			serializedObject.ApplyModifiedProperties();
+
+			// Little Fix to Set Scene Dirty if anything has changed
+			if (GUI.changed && !Application.isPlaying) {
+				EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());				
+			}
 		}
 
 		void ShowPoolSettings() {
@@ -157,6 +156,11 @@ namespace UltimateSpawner {
 		string status = "Select a GameObject";
 
 		void ShowPositionSettings() {
+			
+			var spawnPointsList = serializedObject.FindProperty("randomSpawnPoints");
+			var randomFixedX = serializedObject.FindProperty("randomFixedX");
+			var randomFixedY = serializedObject.FindProperty("randomFixedY");
+			var randomFixedZ = serializedObject.FindProperty("randomFixedZ");
 		
 			GUILayout.Space(5);
 			
@@ -204,6 +208,7 @@ namespace UltimateSpawner {
 							EditorGUILayout.PropertyField(spawnPointsList.GetArrayElementAtIndex(i));
 						}
 					}
+					spawnPointsList.serializedObject.ApplyModifiedProperties();
 					EditorGUI.indentLevel -= 1;
 					
 				}
@@ -244,6 +249,7 @@ namespace UltimateSpawner {
 								EditorGUILayout.PropertyField(randomFixedX.GetArrayElementAtIndex(i));
 							}
 						}
+						randomFixedX.serializedObject.ApplyModifiedProperties();
 
 						EditorGUI.indentLevel -= 1;
 						EditorGUI.indentLevel -= 1;
@@ -292,6 +298,7 @@ namespace UltimateSpawner {
 								EditorGUILayout.PropertyField(randomFixedY.GetArrayElementAtIndex(i));
 							}
 						}
+						randomFixedY.serializedObject.ApplyModifiedProperties();
 
 						EditorGUI.indentLevel -= 1;
 						EditorGUI.indentLevel -= 1;
@@ -341,10 +348,12 @@ namespace UltimateSpawner {
 								EditorGUILayout.PropertyField(randomFixedZ.GetArrayElementAtIndex(i));
 							}
 						}
+						randomFixedY.serializedObject.ApplyModifiedProperties();
+
 						EditorGUI.indentLevel -= 1;
 						EditorGUI.indentLevel -= 1;
 
-					} else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedXEnum] == RandomRange) {
+					} else if (ultimateSpawner.positionEnum.list[ultimateSpawner.selectedZEnum] == RandomRange) {
 
 						EditorGUILayout.BeginHorizontal();
 						GUILayout.Label("Z Random Range");
@@ -372,10 +381,10 @@ namespace UltimateSpawner {
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 			
-			spawnPointsList.serializedObject.Update();
-			randomFixedX.serializedObject.Update();
-			randomFixedY.serializedObject.Update();
-			randomFixedZ.serializedObject.Update();
+//			spawnPointsList.serializedObject.Update();
+//			randomFixedX.serializedObject.Update();
+//			randomFixedY.serializedObject.Update();
+//			randomFixedZ.serializedObject.Update();
 		}
 
 		void ShowRotationSettings() {

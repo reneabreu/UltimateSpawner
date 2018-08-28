@@ -91,8 +91,10 @@ namespace UltimateSpawner {
 					}
 					
 				}
-				
+				EditorUtility.SetDirty(lists[listIndex]);
 			}
+			
+			AssetDatabase.SaveAssets();
 
 		}
 	}

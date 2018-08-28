@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Name: SpawnPointEnum
   m_EditorClassIdentifier: 
   name: SpawnPointEnum
-  list: []
+  list:
+  - {fileID: 11400000, guid: 316322dfe968ce542bb875d01f56a1b2, type: 2}
+  - {fileID: 11400000, guid: 274b3a45f23c9d04da1185a912f8759f, type: 2}
