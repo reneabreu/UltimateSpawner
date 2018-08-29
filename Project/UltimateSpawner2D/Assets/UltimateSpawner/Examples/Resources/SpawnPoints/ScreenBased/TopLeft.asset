@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d510ffcd755e65e4ea3d9b71e66cb908, type: 3}
-  m_Name: RandomSpawnPoint2D-2
+  m_Name: TopLeft
   m_EditorClassIdentifier: 
-  positionType: 0
+  positionType: 1
   screenBasedPosition: 0
   offset: {x: 0, y: 0, z: 0}
-  vectorPosition: {x: 0, y: 4, z: 0}
+  vectorPosition: {x: -8.888889, y: 5, z: -10}

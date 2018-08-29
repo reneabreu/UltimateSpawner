@@ -145,11 +145,11 @@ MonoBehaviour:
   spawnMode: 0
   ShowDebugMessages: 0
   inputKeyCode: 0
-  usePoolSystem: 0
+  usePoolSystem: 1
   poolCreated: 0
   poolSize: 10
   canIncreasePoolSize: 1
-  poolMaxSize: 21
+  poolMaxSize: 40
   firstSpawnTime: 1
   fixedDelayBetweenSpawns: 0.3
   minDelayBetweenSpawns: 1
@@ -161,11 +161,16 @@ MonoBehaviour:
   showGizmos: 1
   spawnPointEnum: {fileID: 11400000, guid: 013d835783e2bf046a61c9c2dda44328, type: 2}
   selectedSpawnPointEnum: 1
-  fixedSpawnPoint: {fileID: 0}
+  fixedSpawnPoint: {fileID: 11400000, guid: 2ed68ecc4b2b60f46afbb08ca7553107, type: 2}
   randomSpawnPoints:
-  - {fileID: 11400000, guid: 75dbfdb5cb9aa4347a55d00d42f5771e, type: 2}
-  - {fileID: 11400000, guid: 17f6c4e830c0c7d488f83632dff7d308, type: 2}
-  - {fileID: 11400000, guid: 809cdd1f7b3815c4fa92b6899b4e5c3c, type: 2}
+  - {fileID: 11400000, guid: 76a8e19833ce91a41b32b390e93f7f18, type: 2}
+  - {fileID: 11400000, guid: 2ed68ecc4b2b60f46afbb08ca7553107, type: 2}
+  - {fileID: 11400000, guid: 29268fce02d114d44adbb0cf42e948ef, type: 2}
+  - {fileID: 11400000, guid: 054917da9cfda7749becc49acbcff65e, type: 2}
+  - {fileID: 11400000, guid: ed0bc6fb09104e24795729177ab4f2a3, type: 2}
+  - {fileID: 11400000, guid: dc46288ffd56fa041937b1cc12031151, type: 2}
+  - {fileID: 11400000, guid: d615c7d3eb60f7b4f8499441c775164d, type: 2}
+  - {fileID: 11400000, guid: 010dc0d4ebe33334a84681cd8fb4c19b, type: 2}
   positionEnum: {fileID: 11400000, guid: 65c77474a4a11874fb0d44ed3afd6ae0, type: 2}
   selectedPositionEnum: 0
   selectedXEnum: 2

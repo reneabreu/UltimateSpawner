@@ -378,14 +378,14 @@ namespace UltimateSpawner {
 				if (spawnAt == SpawnAt.SpawnPoint) {
 
 					if (spawnPointEnum.list[selectedSpawnPointEnum] == Fixed) {
-						Gizmos.DrawIcon(fixedSpawnPoint.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
+						Gizmos.DrawIcon(fixedSpawnPoint.VectorPosition(), "UltimateSpawner/spawner_icon.png", true);
 
 					}
 
 					else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
 						foreach (var spawnPoint in randomSpawnPoints) {
 							if (spawnPoint != null)
-								Gizmos.DrawIcon(spawnPoint.vectorPosition, "UltimateSpawner/spawner_icon.png", true);
+								Gizmos.DrawIcon(spawnPoint.VectorPosition(), "UltimateSpawner/spawner_icon.png", true);
 						}
 					}
 
@@ -407,12 +407,12 @@ namespace UltimateSpawner {
 			else if (spawnAt == SpawnAt.SpawnPoint) {
 
 				if (spawnPointEnum.list[selectedSpawnPointEnum] == Fixed) {
-					return fixedSpawnPoint.vectorPosition;
+					return fixedSpawnPoint.VectorPosition();
 				}
 
 				else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
 					int randomSpawnpoint = Random.Range(0, randomSpawnPoints.Count);
-					return randomSpawnPoints[randomSpawnpoint].vectorPosition;
+					return randomSpawnPoints[randomSpawnpoint].VectorPosition();
 				}
 
 			}
