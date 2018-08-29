@@ -153,7 +153,6 @@ namespace UltimateSpawner {
 		string[] spawnPointStrings, positionStrings;
 		
 		bool showX, showY, showZ;
-		string status = "Select a GameObject";
 
 		void ShowPositionSettings() {
 			
