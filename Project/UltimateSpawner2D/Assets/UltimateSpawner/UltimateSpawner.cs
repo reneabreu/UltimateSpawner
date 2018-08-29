@@ -17,9 +17,6 @@ namespace UltimateSpawner {
 		[Tooltip("Choose a Object to spawn")] 
 		public GameObject objectToSpawn;
 		
-		[Tooltip("Should we use object pooling?")] 
-		public bool usePoolSystem;
-		
 		public SpawnMode spawnMode;
 
 		// Show/Hide Debug Logs (I hate spammed logs)
@@ -35,6 +32,11 @@ namespace UltimateSpawner {
 		#endregion
 
 		#region Pooling Setup
+		
+//		[Tooltip("Should we use object pooling?")] 
+		public bool usePoolSystem;
+
+		public bool poolCreated;
 
 		// Pool Basic Settings
 		public int poolSize = 20;
@@ -127,6 +129,8 @@ namespace UltimateSpawner {
 
 		#region Rotation Setup
 
+		private Transform rotationTransform;
+		
 		public SpawnRotation spawnRotation;
 
 		public float customRotationX;
@@ -162,6 +166,10 @@ namespace UltimateSpawner {
 		#endif
 
 		void Awake() {
+			
+			// Setup Rotation Controller
+			rotationTransform = new GameObject("USRotationController").transform;
+			
 			if(usePoolSystem)
 				StartPool();
 			
@@ -172,6 +180,10 @@ namespace UltimateSpawner {
 
 		void Update() {
 
+			// Create pool if state changed
+			if (usePoolSystem && !poolCreated)
+				StartPool();
+			
 			if (spawnMode == SpawnMode.Input) {
 				if (Input.GetKeyDown(inputKeyCode))
 					Spawn();
@@ -210,6 +222,8 @@ namespace UltimateSpawner {
 			
 			if(Application.isEditor && ShowDebugMessages)
 				Debug.Log("Pool created!");
+
+			poolCreated = true;
 		}
 		
 		GameObject GetNextObject() {
@@ -464,10 +478,9 @@ namespace UltimateSpawner {
 		#endregion
 
 		#region Rotation
-
+		
 		Quaternion GetSpawnRotation() {
 
-			Transform rotationTransform = new GameObject().transform;
 			
 			switch (spawnRotation) {
 					case SpawnRotation.Custom:
@@ -495,7 +508,8 @@ namespace UltimateSpawner {
 			if (spawnedObject.GetComponent<USExtension_Movement>() == null && movementType != MovementType.None) {
 				spawnedObject.AddComponent<USExtension_Movement>();
 			}
-			else {
+			
+			if (spawnedObject.GetComponent<USExtension_Movement>() != null && movementType != MovementType.None) {
 				// 2D
 				if(objectType == ObjectType._2D && movementType == MovementType.Force)
 					spawnedObject.GetComponent<USExtension_Movement>().Movement(force2D, forceMode2D);
