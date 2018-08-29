@@ -1,4 +1,13 @@
 # UltimateSpawner
+
+<p align="center">
+    <a href="https://GitHub.com/reneabreu/UltimateSpawner/releases/">
+        <img src="https://img.shields.io/github/downloads/reneabreu/UltimateSpawner/total.svg"></a>
+    <a href="https://GitHub.com/reneabreu/UltimateSpawner/releases/">
+        <img src="https://img.shields.io/github/release/reneabreu/UltimateSpawner.svg">
+    </a>
+</p>
+
 UltimateSpawner is a simple spawn system created for Unity projects.
 
 ![UltimateSpawner](Images/UltimateSpawner_overview.gif)
