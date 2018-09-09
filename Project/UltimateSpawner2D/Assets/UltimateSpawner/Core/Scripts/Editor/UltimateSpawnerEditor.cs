@@ -134,7 +134,7 @@ namespace UltimateSpawner {
 			} else if (ultimateSpawner.spawnMode == SpawnMode.RandomTime) {
 				GUILayout.Label("Random Time Settings");
 				ultimateSpawner.minDelayBetweenSpawns = EditorGUILayout.FloatField("Min Time Between Spawns", ultimateSpawner.minDelayBetweenSpawns);
-				ultimateSpawner.maxDelayBetweenSpawns = EditorGUILayout.FloatField("Max Ttime Between Spawns", ultimateSpawner.maxDelayBetweenSpawns);
+				ultimateSpawner.maxDelayBetweenSpawns = EditorGUILayout.FloatField("Max Time Between Spawns", ultimateSpawner.maxDelayBetweenSpawns);
 				
 			} else if (ultimateSpawner.spawnMode == SpawnMode.ProgressiveTime) {
 				GUILayout.Label("Progressive Time Settings");
