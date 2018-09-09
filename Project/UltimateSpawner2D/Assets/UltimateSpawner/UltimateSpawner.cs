@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace UltimateSpawner {
@@ -162,6 +163,11 @@ namespace UltimateSpawner {
 		#if UNITY_EDITOR
 		private void OnValidate() {
 			SetEnum();
+			
+			UltimateLog("Normal message");
+			UltimateLog("Warning message", "WARNING");
+			UltimateLog("Error message", "ERROR");
+			
 		}
 		#endif
 
@@ -540,6 +546,33 @@ namespace UltimateSpawner {
 			Fixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/Fixed");
 			RandomFixed = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomFixed");
 			RandomRange = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomRange");
+		}
+
+		
+		/// <summary>
+		/// Used to send a debug message
+		/// </summary>
+		/// <param name="message">The log you want to send</param>
+		/// <param name="logType">You can use "NORMAL", "WARNING", "ERROR" </param>
+		public void UltimateLog(string message, string logType = "NORMAL") {
+
+			Color ultimateSpawnerTagColor;
+			
+			if(UnityEditor.EditorGUIUtility.isProSkin)
+				ultimateSpawnerTagColor = new Color(8,129,221);
+			else
+				ultimateSpawnerTagColor = new Color(5,81,139);
+			
+			string header = "UltimateSpawner: ";
+			
+			if (logType == "NORMAL")
+				Debug.Log (string.Format("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
+			
+			if (logType == "WARNING")
+				Debug.LogWarning (string.Format("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
+			
+			if (logType == "ERROR")
+				Debug.LogError (string.Format("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
 		}
 
 		#endregion
