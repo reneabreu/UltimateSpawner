@@ -164,10 +164,13 @@ namespace UltimateSpawner {
 		private void OnValidate() {
 			SetEnum();
 			
-			UltimateLog("Normal message");
-			UltimateLog("Warning message", "WARNING");
-			UltimateLog("Error message", "ERROR");
+//			Testing Logs
+//			UltimateLog("Normal message");
+//			UltimateLog("Warning message", "WARNING");
+//			UltimateLog("Error message", "ERROR");
 			
+			// Log UltimateSpawner configuration
+//			UltimateLog("");
 		}
 		#endif
 
@@ -226,8 +229,7 @@ namespace UltimateSpawner {
 				objectsPool.Add(poolObject);
 			}
 			
-			if(Application.isEditor && ShowDebugMessages)
-				Debug.Log("Pool created!");
+			UltimateLog("Pool created!");
 
 			poolCreated = true;
 		}
@@ -237,8 +239,7 @@ namespace UltimateSpawner {
 			// Check for the next available object in pool
 			for (int i = 0; i < objectsPool.Count; i++) {
 				if (!objectsPool[i].activeInHierarchy) {
-					if(Application.isEditor && ShowDebugMessages)
-						Debug.Log(string.Format("Object {0} in pool was choosen", i));
+					UltimateLog(string.Format("Object {0} in pool was choosen", i));
 					
 					return objectsPool[i];
 				}
@@ -247,16 +248,16 @@ namespace UltimateSpawner {
 			// If there is no object available in pool and we can icrease the pool
 			// Spawn a new object
 			if (canIncreasePoolSize && objectsPool.Count < poolMaxSize) {
-				if(Application.isEditor && ShowDebugMessages)
-					Debug.Log("Pool reached max size! Adding another object to the pool!");
+				UltimateLog("Pool reached max size! Adding another object to the pool!");
 				
 				GameObject newPoolObject = Instantiate(objectToSpawn);
 				objectToSpawn.SetActive(false);
 				return newPoolObject;
 			}
 			else {
-				if(Application.isEditor && ShowDebugMessages)
-					Debug.Log("Pool reached max size! Unfortunately it reached it's maximum size.");
+				UltimateLog("Pool reached max size!");
+				UltimateLog("Unfortunately the pool reached it's maximum size. " +
+				            "If you still need it to increase, try to setup a bigger max size", "WARNING");
 			}
 
 			return null;
@@ -331,8 +332,7 @@ namespace UltimateSpawner {
 						interval = RandomTimer();
 						break;
 					default:
-						if(Application.isEditor && ShowDebugMessages)
-							Debug.Log("Elapsed was called but timer is not configured");
+						UltimateLog("Elapsed was called but timer is not configured");
 						break;
 			}
 		}
@@ -342,8 +342,7 @@ namespace UltimateSpawner {
 			// Generate random number between gap
 			float randomDelayBetweenSpawns = Random.Range(minDelayBetweenSpawns, maxDelayBetweenSpawns);
 			
-			if(Application.isEditor && ShowDebugMessages)
-				Debug.Log(string.Format("The next spawn will occur in {0} seconds", randomDelayBetweenSpawns));
+			UltimateLog(string.Format("The next spawn will happen in {0} seconds", randomDelayBetweenSpawns));
 
 			return randomDelayBetweenSpawns;
 		}
@@ -358,8 +357,7 @@ namespace UltimateSpawner {
 			if (interval <= progressiveDelayLimit) {
 				progressiveDelay = progressiveDelayLimit;
 				
-				if(Application.isEditor && ShowDebugMessages)
-					Debug.Log(string.Format("The next spawn will occur in {0} seconds", progressiveDelay));
+				UltimateLog(string.Format("The spawn delay has reached it's limit of {0} seconds", progressiveDelay));
 				
 				return progressiveDelay;
 			}
@@ -367,8 +365,7 @@ namespace UltimateSpawner {
 			// Reduce the delay
 			progressiveDelay = interval - delayModifier;
 			
-			if(Application.isEditor && ShowDebugMessages)
-				Debug.Log(string.Format("The next spawn will occur in {0} seconds", progressiveDelay));
+			UltimateLog(string.Format("The next spawn will happen in {0} seconds", progressiveDelay));
 			
 			return progressiveDelay;
 		}
@@ -379,7 +376,8 @@ namespace UltimateSpawner {
 
 		void OnDrawGizmos() {
 
-			if (showGizmos) {
+			// TODO: Improve gizmos! For now it is only working with spawn points
+			if (showGizmos && spawnAt == SpawnAt.SpawnPoint) {
 				// SpawnPoint
 				if (spawnAt == SpawnAt.SpawnPoint) {
 
@@ -473,8 +471,7 @@ namespace UltimateSpawner {
 				return spawnPosition;
 			} 
 			
-			if(Application.isEditor && ShowDebugMessages)
-				Debug.Log("Something went wrong and the position is null");
+			UltimateLog("Something went wrong and the position is null", "ERROR");
 			
 			// In case of null return at (0,0,0)
 			return Vector3.zero;
@@ -556,13 +553,17 @@ namespace UltimateSpawner {
 		/// <param name="logType">You can use "NORMAL", "WARNING", "ERROR" </param>
 		public void UltimateLog(string message, string logType = "NORMAL") {
 
+			// If is not editor or we don't want to show logs
+			if (!Application.isEditor || !ShowDebugMessages)
+				return;
+
+			// Create color
 			Color ultimateSpawnerTagColor;
 			
-			if(UnityEditor.EditorGUIUtility.isProSkin)
-				ultimateSpawnerTagColor = new Color(8,129,221);
-			else
-				ultimateSpawnerTagColor = new Color(5,81,139);
+			// Setup a color variation for each skin
+			ultimateSpawnerTagColor = EditorGUIUtility.isProSkin ? new Color(8,129,221) : new Color(5,81,139);
 			
+			// Header to indicate that the log came from UltimateSpawner
 			string header = "UltimateSpawner: ";
 			
 			if (logType == "NORMAL")
