@@ -39,6 +39,8 @@ UltimateSpawner is a simple spawn system created for Unity projects.
 
 ## How to use it
 
+For more info please read the [Documentation](HOW-TO.md)
+
 1. [Download the latest release](https://github.com/reneabreu/UltimateSpawner2D/releases)
 2. Import the package inside your Unity Project
 3. Play with the sample scenes (:
