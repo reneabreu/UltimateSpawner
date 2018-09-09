@@ -134,7 +134,7 @@ Choose a few spawn points to make UltimateSpawner randomize between them.
 
 ### Position
 
-![UltimateSpawner - Position Settings - Position](Images/Screenshots/position-settings-Position.png)
+![UltimateSpawner - Position Settings - Position](Images/Screenshots/position-settings-position.png)
 
 The Position Option let you setup each axis independently. There are a few options that can be applied to each of them:
 
