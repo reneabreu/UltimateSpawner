@@ -129,12 +129,12 @@ namespace UltimateSpawner {
 			
 			if (ultimateSpawner.spawnMode == SpawnMode.FixedTime) {
 				GUILayout.Label("Fixed Time Settings");
-				ultimateSpawner.fixedDelayBetweenSpawns = EditorGUILayout.FloatField("Delay Between Spawns", ultimateSpawner.fixedDelayBetweenSpawns);
+				ultimateSpawner.fixedDelayBetweenSpawns = EditorGUILayout.FloatField("Seconds Between Spawns", ultimateSpawner.fixedDelayBetweenSpawns);
 				
 			} else if (ultimateSpawner.spawnMode == SpawnMode.RandomTime) {
 				GUILayout.Label("Random Time Settings");
-				ultimateSpawner.minDelayBetweenSpawns = EditorGUILayout.FloatField("Maximum Delay Between Spawns", ultimateSpawner.minDelayBetweenSpawns);
-				ultimateSpawner.maxDelayBetweenSpawns = EditorGUILayout.FloatField("Minimum Delay Between Spawns", ultimateSpawner.maxDelayBetweenSpawns);
+				ultimateSpawner.minDelayBetweenSpawns = EditorGUILayout.FloatField("Min Time Between Spawns", ultimateSpawner.minDelayBetweenSpawns);
+				ultimateSpawner.maxDelayBetweenSpawns = EditorGUILayout.FloatField("Max Ttime Between Spawns", ultimateSpawner.maxDelayBetweenSpawns);
 				
 			} else if (ultimateSpawner.spawnMode == SpawnMode.ProgressiveTime) {
 				GUILayout.Label("Progressive Time Settings");
