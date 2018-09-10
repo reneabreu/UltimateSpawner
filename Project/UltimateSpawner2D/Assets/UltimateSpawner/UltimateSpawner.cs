@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters;
 using UnityEditor;
 using UnityEngine;
 
@@ -169,12 +170,12 @@ namespace UltimateSpawner {
 //			UltimateLog("Warning message", "WARNING");
 //			UltimateLog("Error message", "ERROR");
 			
-			// Log UltimateSpawner configuration
-//			UltimateLog("");
 		}
 		#endif
 
 		void Awake() {
+			
+			ShowUltimateSpawnerSetUp();
 			
 			// Setup Rotation Controller
 			rotationTransform = new GameObject("USRotationController").transform;
@@ -567,13 +568,80 @@ namespace UltimateSpawner {
 			string header = "UltimateSpawner: ";
 			
 			if (logType == "NORMAL")
-				Debug.Log (string.Format("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
+				Debug.Log (string.Format("<color=#{0:X2}{1:X2}{2:X2}><b>{3}</b></color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
 			
 			if (logType == "WARNING")
-				Debug.LogWarning (string.Format("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
+				Debug.LogWarning (string.Format("<color=#{0:X2}{1:X2}{2:X2}><b>{3}</b></color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
 			
 			if (logType == "ERROR")
-				Debug.LogError (string.Format("<color=#{0:X2}{1:X2}{2:X2}>{3}</color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
+				Debug.LogError (string.Format("<color=#{0:X2}{1:X2}{2:X2}><b>{3}</b></color>{4}", (byte)(ultimateSpawnerTagColor.r), (byte)(ultimateSpawnerTagColor.g), (byte)(ultimateSpawnerTagColor.b), header, message), gameObject);
+		}
+
+		void ShowUltimateSpawnerSetUp() {
+			
+			// Log UltimateSpawner configuration
+			string setup = "UltimateSpawner Setup\n";
+			setup += "Object to Spawn: " + objectToSpawn.name + "\n";
+			setup += "Spawn Mode: " + spawnMode.ToString() + "\n";
+
+			if (spawnMode == SpawnMode.FixedTime)
+				setup += "Fixed time: " + fixedDelayBetweenSpawns + "\n";
+			if (spawnMode == SpawnMode.RandomTime)
+				setup += string.Format("Random Time Between {0} and {1}\n", minDelayBetweenSpawns, maxDelayBetweenSpawns);
+			if (spawnMode == SpawnMode.ProgressiveTime)
+				setup += string.Format("Progressive Time starts at: {0}" +
+				                       "\nand will reduce: {1} after every spawn" +
+				                       "\nbut will stop at: {2}\n",
+					startingDelayBetweenSpawns, delayModifier, progressiveDelayLimit);
+			if (spawnMode == SpawnMode.Input)
+				setup += "Spawn when pressing key: " + inputKeyCode.ToString() + "\n";
+
+			if (spawnAt == SpawnAt.Spawner)
+				setup += "Spawn At: UltimateSpawner Position\n";
+			if (spawnAt == SpawnAt.SpawnPoint) {
+				if (spawnPointEnum == Fixed)
+					setup += "Fixed Spawn Point: " + fixedSpawnPoint.name + "\n";
+
+				if (spawnPointEnum == RandomFixed)
+					setup += string.Format("Randomizing between {0} spawn points\n", randomSpawnPoints.Count);
+			}
+
+			if (spawnAt == SpawnAt.Position) {
+				setup += "Spawn at: Custom Position\n";
+				
+				// TODO : Add the custom data here
+			}
+
+			if (spawnAt == SpawnAt.TargetTransform)
+				setup += string.Format("Spawn at {0}'s transform position\n", targetTransform.name);
+			
+			if (spawnRotation == SpawnRotation.Identity)
+				setup += "Object's rotation will be: Quaternion.Identity (0,0,0)\n";
+			if (spawnRotation == SpawnRotation.Spawner)
+				setup += "Object's rotation will be: UltimateSpawner Rotation\n";
+			if (spawnRotation == SpawnRotation.ObjectOwnRotation)
+				setup += "Object's rotation will be: Prefab's Current Rotation\n";
+			if (spawnRotation == SpawnRotation.Custom)
+				setup += string.Format("Object's rotation will be: ({0},{1},{2})\n",customRotationX, customRotationY, customRotationZ);
+
+			if (movementType == MovementType.None)
+				setup += "Won't apply any movement\n";
+			if (movementType == MovementType.Force)
+				setup += "UltimateSpawner will apply force to Object\n";
+			if (movementType == MovementType.Velocity)
+				setup += "UltimateSpawner will apply a speed to objects's velocity\n";
+
+			setup += usePoolSystem ? "Use Pool System: Yes\n" : "Use Pool System: No\n";
+
+			if (usePoolSystem)
+				setup += "Pool Size: " + poolSize + "\n";
+
+			setup += canIncreasePoolSize ? "Can Increase Pool Size: Yes\n" : "Can Increase Pool Size: No\n";
+
+			if (canIncreasePoolSize)
+				setup += "Pool Max Size: " + poolMaxSize + "\n";
+			
+			UltimateLog(setup);
 		}
 
 		#endregion
