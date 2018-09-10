@@ -286,6 +286,10 @@ namespace UltimateSpawner {
 						currentPoolGameObject.transform.rotation = GetSpawnRotation();
 
 					ApplyMovement(currentPoolGameObject);
+					
+					UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
+						currentPoolGameObject.name, currentPoolGameObject.transform.position.ToString(), 
+						currentPoolGameObject.transform.rotation.eulerAngles.ToString()));
 				}
 			}
 			// Instantiate New Object
@@ -298,6 +302,10 @@ namespace UltimateSpawner {
 					instantiatedObject.transform.rotation = GetSpawnRotation();
 
 				ApplyMovement(instantiatedObject);
+				
+				UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
+					instantiatedObject.name, instantiatedObject.transform.position.ToString(), 
+					instantiatedObject.transform.rotation.eulerAngles.ToString()));
 			}
 		}
 		
@@ -609,7 +617,27 @@ namespace UltimateSpawner {
 			if (spawnAt == SpawnAt.Position) {
 				setup += "Spawn at: Custom Position\n";
 				
-				// TODO : Add the custom data here
+				if (positionEnum.list[selectedXEnum] == Fixed)
+					setup += "X is fixed at: " + fixedX + "\n";
+				if (positionEnum.list[selectedXEnum] == RandomFixed)
+					setup += "X will randomize between " + randomFixedX.Count + "positions \n";
+				if (positionEnum.list[selectedXEnum] == RandomRange)
+					setup += string.Format("X will be randomized between {0} and {1}\n", randomRangeMinX, randomRangeMaxX);
+				
+				if (positionEnum.list[selectedYEnum] == Fixed)
+					setup += "Y is fixed at: " + fixedY + "\n";
+				if (positionEnum.list[selectedYEnum] == RandomFixed)
+					setup += "Y will randomize between " + randomFixedY.Count + "positions \n";
+				if (positionEnum.list[selectedYEnum] == RandomRange)
+					setup += string.Format("Y will be randomized between {0} and {1}\n", randomRangeMinY, randomRangeMaxY);
+				
+				if (positionEnum.list[selectedZEnum] == Fixed)
+					setup += "Z is fixed at: " + fixedZ + "\n";
+				if (positionEnum.list[selectedZEnum] == RandomFixed)
+					setup += "Z will randomize between " + randomFixedZ.Count + "positions \n";
+				if (positionEnum.list[selectedZEnum] == RandomRange)
+					setup += string.Format("Z will be randomized between {0} and {1}\n", randomRangeMinZ, randomRangeMaxZ);
+
 			}
 
 			if (spawnAt == SpawnAt.TargetTransform)
