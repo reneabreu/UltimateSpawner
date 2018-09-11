@@ -14,6 +14,11 @@ namespace UltimateSpawner {
 		
 		#endregion
 
+		#region Spawned Object Settings
+
+		private GameObject latestSpawnedObject;
+		
+		#endregion
 		#region Spawner Basic Settings
 
 		[Tooltip("Choose a Object to spawn")] 
@@ -206,6 +211,19 @@ namespace UltimateSpawner {
 		}
 
 		#endregion
+		
+		#region SpawnedObject
+
+		private void SetLatestSpawnedObject(GameObject spawnedGameObject) {
+			latestSpawnedObject = spawnedGameObject;
+		}
+
+		public GameObject GetLatestSpawnedObject() {
+			return latestSpawnedObject;
+		}
+		
+		
+		#endregion
 
 		#region Pooling
 
@@ -276,10 +294,15 @@ namespace UltimateSpawner {
 					// Position it
 					currentPoolGameObject.transform.position = GetSpawnPosition();
 
+					// Rotate it
 					if (spawnRotation != SpawnRotation.ObjectOwnRotation)
 						currentPoolGameObject.transform.rotation = GetSpawnRotation();
 
+					// Move it
 					ApplyMovement(currentPoolGameObject);
+
+					// Setting Latest Spawned Object
+					SetLatestSpawnedObject(currentPoolGameObject);
 					
 					UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
 						currentPoolGameObject.name, currentPoolGameObject.transform.position.ToString(), 
@@ -290,12 +313,18 @@ namespace UltimateSpawner {
 			else {
 				GameObject instantiatedObject = Instantiate(objectToSpawn);
 
+				// Position it
 				instantiatedObject.transform.position = GetSpawnPosition();
 
+				// Rotate it
 				if (spawnRotation != SpawnRotation.ObjectOwnRotation)
 					instantiatedObject.transform.rotation = GetSpawnRotation();
 
+				// Move it
 				ApplyMovement(instantiatedObject);
+
+				// Setting Latest Spawned Object
+				SetLatestSpawnedObject(instantiatedObject);
 				
 				UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
 					instantiatedObject.name, instantiatedObject.transform.position.ToString(), 
