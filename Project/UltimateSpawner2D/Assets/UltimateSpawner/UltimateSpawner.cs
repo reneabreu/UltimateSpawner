@@ -164,12 +164,6 @@ namespace UltimateSpawner {
 		#if UNITY_EDITOR
 		private void OnValidate() {
 			SetEnum();
-			
-//			Testing Logs
-//			UltimateLog("Normal message");
-//			UltimateLog("Warning message", "WARNING");
-//			UltimateLog("Error message", "ERROR");
-			
 		}
 		#endif
 
@@ -307,6 +301,8 @@ namespace UltimateSpawner {
 					instantiatedObject.name, instantiatedObject.transform.position.ToString(), 
 					instantiatedObject.transform.rotation.eulerAngles.ToString()));
 			}
+			
+			Spawned.Invoke();
 		}
 		
 		#endregion
@@ -671,6 +667,14 @@ namespace UltimateSpawner {
 			
 			UltimateLog(setup);
 		}
+
+		#endregion
+		
+		#region UltimateSpawner Events
+		
+		public delegate void US_Event();
+
+		public event US_Event Spawned;
 
 		#endregion
 	}
