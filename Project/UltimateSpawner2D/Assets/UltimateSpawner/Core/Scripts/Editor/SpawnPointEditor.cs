@@ -20,7 +20,7 @@ namespace UltimateSpawner {
 			if(spawnPoint.positionType == SpawnPointPosition.Vector3)
 				spawnPoint.vectorPosition = EditorGUILayout.Vector3Field("Force", spawnPoint.vectorPosition);
 			
-			else if (spawnPoint.positionType == SpawnPointPosition.ScreenBased) {
+			else if (spawnPoint.positionType == SpawnPointPosition.ScreenBased2D) {
 				spawnPoint.screenBasedPosition =
 					(SpawnPoint.ScreenBased) EditorGUILayout.EnumPopup("Screen Point", spawnPoint.screenBasedPosition);
 				

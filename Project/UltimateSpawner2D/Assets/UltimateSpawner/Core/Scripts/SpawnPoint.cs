@@ -14,6 +14,7 @@ namespace UltimateSpawner {
 			Top,
 			TopRight,
 			Left,
+			Center,
 			Right,
 			BottomLeft,
 			Bottom,
@@ -23,6 +24,7 @@ namespace UltimateSpawner {
 		public ScreenBased screenBasedPosition;
 		public Vector3 offset;
 		public Vector3 vectorPosition;
+		public Vector3 vectorPositionScreenBased;
 		private Camera c;
 
 
@@ -33,51 +35,66 @@ namespace UltimateSpawner {
 			if (positionType == SpawnPointPosition.Vector3)
 				return vectorPosition;
 
-			if (positionType == SpawnPointPosition.ScreenBased) {
+			if (positionType == SpawnPointPosition.ScreenBased2D) {
 				if (screenBasedPosition == ScreenBased.TopLeft) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(offset.x, c.pixelHeight + offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 				if (screenBasedPosition == ScreenBased.Top) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(c.pixelWidth / 2 + offset.x, c.pixelHeight + offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 				if (screenBasedPosition == ScreenBased.TopRight) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(c.pixelWidth + offset.x, c.pixelHeight + offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 				
 				if (screenBasedPosition == ScreenBased.Left) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(offset.x, c.pixelHeight/2 + offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
+				}
+				
+				if (screenBasedPosition == ScreenBased.Center) {
+					vectorPositionScreenBased =
+						c.ScreenToWorldPoint(new Vector3(c.pixelWidth / 2 + offset.x, c.pixelHeight/2 + offset.y, offset.z));
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 				
 				if (screenBasedPosition == ScreenBased.Right) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(c.pixelWidth + offset.x, c.pixelHeight/2 + offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 				
 				if (screenBasedPosition == ScreenBased.BottomLeft) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(offset.x, offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 				
 				if (screenBasedPosition == ScreenBased.Bottom) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(c.pixelWidth / 2 + offset.x, offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 				
 				if (screenBasedPosition == ScreenBased.BottomRight) {
-					vectorPosition =
+					vectorPositionScreenBased =
 						c.ScreenToWorldPoint(new Vector3(c.pixelWidth + offset.x, offset.y, offset.z));
-					return vectorPosition;
+					vectorPositionScreenBased.z = 0 + offset.z;
+					return vectorPositionScreenBased;
 				}
 			}
 			
@@ -87,7 +104,7 @@ namespace UltimateSpawner {
 	
 	public enum SpawnPointPosition {
 		Vector3,
-		ScreenBased
+		ScreenBased2D
 	}
 
 }
