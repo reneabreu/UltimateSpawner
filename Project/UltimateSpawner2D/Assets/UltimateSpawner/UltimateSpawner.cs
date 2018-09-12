@@ -185,13 +185,13 @@ namespace UltimateSpawner {
 			if (spawnMode == SpawnMode.FixedTime || spawnMode == SpawnMode.ProgressiveTime ||
 			    spawnMode == SpawnMode.RandomTime)
 				SetupTimer();
+
+			// A little fix to prevent errors when using the pooling system
+			if (poolMaxSize < poolSize)
+				poolMaxSize = poolSize + 1;
 		}
 
 		void Update() {
-
-			// Create pool if state changed
-			if (usePoolSystem && !poolCreated)
-				StartPool();
 			
 			if (spawnMode == SpawnMode.Input) {
 				if (Input.GetKeyDown(inputKeyCode))
@@ -228,26 +228,59 @@ namespace UltimateSpawner {
 		#region Pooling
 
 		void StartPool() {
-
-			// Initialize Pool Object
-			currentPoolGameObject = new GameObject();
 			
-			// Initialize Pool
-			objectsPool = new List<GameObject>();
-			
-			// Spawn Pool
-			for (int i = 0; i < poolSize; i++) {
-				GameObject poolObject = Instantiate(objectToSpawn);
-				poolObject.SetActive(false);
-				objectsPool.Add(poolObject);
+			// Before start a new pool we should check if the pool exists
+			if (objectsPool != null) {
+				// Yup there is a pool, but is it in the correct size?
+				if (objectsPool.Count <= poolMaxSize && objectsPool.Count >= poolSize) {
+					// Everything is fine, no need to create the pool again 
+					return;
+				} else if (objectsPool.Count < poolSize) {
+					// Something went wrong and a few objects were destroyed
+					// Fixing the pool
+					for (int i = objectsPool.Count; i < poolSize; i++){
+						GameObject poolObject = Instantiate(objectToSpawn);
+						poolObject.SetActive(false);
+						objectsPool.Add(poolObject);
+					}
+					
+					UltimateLog("It looks like something went wrong with the pool and " +
+					            "a few objects were destroyed, but we already fixed that");
+				}
 			}
-			
-			UltimateLog("Pool created!");
+			else {
+				// Nope, no pool created...
+				// Let's create one
+				// Initialize Pool Object
+				currentPoolGameObject = new GameObject();
 
-			poolCreated = true;
+				// Initialize Pool
+				objectsPool = new List<GameObject>();
+
+				// Spawn Pool
+				for (int i = 0; i < poolSize; i++) {
+					GameObject poolObject = Instantiate(objectToSpawn);
+					poolObject.SetActive(false);
+					objectsPool.Add(poolObject);
+				}
+
+				UltimateLog("Pool created!");
+
+				poolCreated = true;
+			}
 		}
 		
 		GameObject GetNextObject() {
+
+			if (objectsPool.Count == 0) {
+				UltimateLog("Pool was destroyed and you are trying to access it, " +
+				            "to prevent errors UltimateSpawner will create a new pool");
+				StartPool();
+			}
+			// Before get next, let's check if the pool still exists
+			if (objectsPool.Count < poolSize) {
+				StartPool();
+			}
 		
 			// Check for the next available object in pool
 			for (int i = 0; i < objectsPool.Count; i++) {
@@ -281,6 +314,14 @@ namespace UltimateSpawner {
 		#region Spawn
 
 		public void Spawn() {
+			
+			// To prevent errors it's better check if is using pooling and if the pool exists
+			// Check if pool is created
+			if (usePoolSystem && objectsPool == null) {
+				StartPool();
+				UltimateLog("You are trying to use the pooling system, but there is no pool created. " +
+				            "UltimateSpawner will create a new pool");
+			}
 
 			// Activate Pool Object
 			if (usePoolSystem) {
