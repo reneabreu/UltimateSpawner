@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UltimateSpawner {
+namespace UltimateSpawnerSystem {
 
 	[CreateAssetMenu(fileName = "Spawn Point", menuName = "UltimateSpawner/Spawn Point")]
 	public class SpawnPoint : ScriptableObject {

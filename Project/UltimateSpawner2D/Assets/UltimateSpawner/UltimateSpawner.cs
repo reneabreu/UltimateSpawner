@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters;
 using UnityEditor;
 using UnityEngine;
 
-namespace UltimateSpawner {
+namespace UltimateSpawnerSystem {
 
 	public class UltimateSpawner : MonoBehaviour {
 

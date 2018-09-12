@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace UltimateSpawner {
+namespace UltimateSpawnerSystem {
 	[CustomEditor(typeof(UltimateSpawner))]
 	public class UltimateSpawnerEditor : Editor {
 		

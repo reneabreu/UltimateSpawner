@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace UltimateSpawner {
+namespace UltimateSpawnerSystem {
 
 	public class ScriptableUSEnumList : ScriptableObject {
 		public new string name;

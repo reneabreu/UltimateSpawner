@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace UltimateSpawner {
+namespace UltimateSpawnerSystem {
 	
 	[CustomEditor(typeof(SpawnPoint))]
 	public class SpawnPointEditor : Editor {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace UltimateSpawner {
+namespace UltimateSpawnerSystem {
 
 	public class USSetup : MonoBehaviour {
 		static List<string> defaultEnums = new List<string>{"Fixed", "RandomFixed", "RandomRange"};
