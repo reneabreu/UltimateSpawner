@@ -43,8 +43,6 @@ namespace UltimateSpawner {
 //		[Tooltip("Should we use object pooling?")] 
 		public bool usePoolSystem;
 
-		public bool poolCreated;
-
 		// Pool Basic Settings
 		public int poolSize = 20;
 
@@ -242,10 +240,11 @@ namespace UltimateSpawner {
 						GameObject poolObject = Instantiate(objectToSpawn);
 						poolObject.SetActive(false);
 						objectsPool.Add(poolObject);
+						poolObject.AddComponent<USPoolObject>().SetUltimateSpawner(this);
 					}
 					
-					UltimateLog("It looks like something went wrong with the pool and " +
-					            "a few objects were destroyed, but we already fixed that");
+					UltimateLog("Some objects in pool were destroyed, consider disabling them instead of destroying." +
+					            "\nTo prevent game crashing UltimateSpawner fixed it by replacing them.", "WARNING");
 				}
 			}
 			else {
@@ -262,32 +261,43 @@ namespace UltimateSpawner {
 					GameObject poolObject = Instantiate(objectToSpawn);
 					poolObject.SetActive(false);
 					objectsPool.Add(poolObject);
+					poolObject.AddComponent<USPoolObject>().SetUltimateSpawner(this);
 				}
 
 				UltimateLog("Pool created!");
-
-				poolCreated = true;
 			}
 		}
 		
 		GameObject GetNextObject() {
-
-			if (objectsPool.Count == 0) {
+			
+			if (objectsPool == null) {
 				UltimateLog("Pool was destroyed and you are trying to access it, " +
 				            "to prevent errors UltimateSpawner will create a new pool");
 				StartPool();
 			}
-			// Before get next, let's check if the pool still exists
+
 			if (objectsPool.Count < poolSize) {
 				StartPool();
 			}
 		
 			// Check for the next available object in pool
 			for (int i = 0; i < objectsPool.Count; i++) {
-				if (!objectsPool[i].activeInHierarchy) {
+				if (!objectsPool[i].activeInHierarchy && objectsPool[i] != null) {
 					UltimateLog(string.Format("Object {0} in pool was choosen", i));
 					
 					return objectsPool[i];
+				}
+
+				if (objectsPool[i] == null) {
+					UltimateLog("Object in pool has been destroyed but you are still trying to access it." +
+					            "To prevent errors UltimateSpawner will create a new object!", "WARNING");
+					
+					objectsPool[i] = Instantiate(objectToSpawn);
+					objectsPool[i].SetActive(false);
+					objectsPool[i].AddComponent<USPoolObject>().SetUltimateSpawner(this);
+
+					return objectsPool[i];
+
 				}
 			}
 
@@ -309,18 +319,23 @@ namespace UltimateSpawner {
 			return null;
 		}
 
+		public void RemoveObjectFromPool(GameObject objectToRemove) {
+			objectsPool.Remove(objectToRemove);
+			UltimateLog(string.Format("Object {0} was removed from pool! And now the new pool size is: {1}", objectToRemove.name, objectsPool.Count ));
+		}
+
 		#endregion
 		
 		#region Spawn
 
 		public void Spawn() {
 			
-			// To prevent errors it's better check if is using pooling and if the pool exists
-			// Check if pool is created
+			// To prevent errors it's better check if pooling system is being used and if the pool exists
+			// Check if pool exists
 			if (usePoolSystem && objectsPool == null) {
-				StartPool();
 				UltimateLog("You are trying to use the pooling system, but there is no pool created. " +
 				            "UltimateSpawner will create a new pool");
+				StartPool();
 			}
 
 			// Activate Pool Object
