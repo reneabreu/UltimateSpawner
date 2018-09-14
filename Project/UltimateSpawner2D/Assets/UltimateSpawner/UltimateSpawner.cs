@@ -174,7 +174,9 @@ namespace UltimateSpawnerSystem {
 
 		void Awake() {
 			
+			#if UNITY_EDITOR
 			ShowUltimateSpawnerSetUp();
+			#endif
 			
 			// Setup Rotation Controller
 			rotationTransform = new GameObject("USRotationController").transform;
@@ -243,9 +245,10 @@ namespace UltimateSpawnerSystem {
 						objectsPool.Add(poolObject);
 						poolObject.AddComponent<USPoolObject>().SetUltimateSpawner(this);
 					}
-					
+					#if UNITY_EDITOR
 					UltimateLog("Some objects in pool were destroyed, consider disabling them instead of destroying." +
 					            "\nTo prevent game crashing UltimateSpawner fixed it by replacing them.", "WARNING");
+					#endif
 				}
 			}
 			else {
@@ -264,16 +267,19 @@ namespace UltimateSpawnerSystem {
 					objectsPool.Add(poolObject);
 					poolObject.AddComponent<USPoolObject>().SetUltimateSpawner(this);
 				}
-
+				#if UNITY_EDITOR
 				UltimateLog("Pool created!");
+				#endif
 			}
 		}
 		
 		GameObject GetNextObject() {
 			
 			if (objectsPool == null) {
+				#if UNITY_EDITOR
 				UltimateLog("Pool was destroyed and you are trying to access it, " +
 				            "to prevent errors UltimateSpawner will create a new pool");
+				#endif
 				StartPool();
 			}
 
@@ -284,14 +290,18 @@ namespace UltimateSpawnerSystem {
 			// Check for the next available object in pool
 			for (int i = 0; i < objectsPool.Count; i++) {
 				if (!objectsPool[i].activeInHierarchy && objectsPool[i] != null) {
+					#if UNITY_EDITOR
 					UltimateLog(string.Format("Object {0} in pool was choosen", i));
+					#endif
 					
 					return objectsPool[i];
 				}
 
 				if (objectsPool[i] == null) {
+					#if UNITY_EDITOR
 					UltimateLog("Object in pool has been destroyed but you are still trying to access it." +
 					            "To prevent errors UltimateSpawner will create a new object!", "WARNING");
+					#endif
 					
 					objectsPool[i] = Instantiate(objectToSpawn);
 					objectsPool[i].SetActive(false);
@@ -305,16 +315,20 @@ namespace UltimateSpawnerSystem {
 			// If there is no object available in pool and we can icrease the pool
 			// Spawn a new object
 			if (canIncreasePoolSize && objectsPool.Count < poolMaxSize) {
+				#if UNITY_EDITOR
 				UltimateLog("Pool reached max size! Adding another object to the pool!");
+				#endif
 				
 				GameObject newPoolObject = Instantiate(objectToSpawn);
 				objectToSpawn.SetActive(false);
 				return newPoolObject;
 			}
 			else {
+				#if UNITY_EDITOR
 				UltimateLog("Pool reached max size!");
 				UltimateLog("Unfortunately the pool reached it's maximum size. " +
 				            "If you still need it to increase, try to setup a bigger max size", "WARNING");
+				#endif
 			}
 
 			return null;
@@ -322,7 +336,9 @@ namespace UltimateSpawnerSystem {
 
 		public void RemoveObjectFromPool(GameObject objectToRemove) {
 			objectsPool.Remove(objectToRemove);
+			#if UNITY_EDITOR
 			UltimateLog(string.Format("Object {0} was removed from pool! And now the new pool size is: {1}", objectToRemove.name, objectsPool.Count ));
+			#endif
 		}
 
 		#endregion
@@ -334,8 +350,10 @@ namespace UltimateSpawnerSystem {
 			// To prevent errors it's better check if pooling system is being used and if the pool exists
 			// Check if pool exists
 			if (usePoolSystem && objectsPool == null) {
+				#if UNITY_EDITOR
 				UltimateLog("You are trying to use the pooling system, but there is no pool created. " +
 				            "UltimateSpawner will create a new pool");
+				#endif
 				StartPool();
 			}
 
@@ -361,9 +379,11 @@ namespace UltimateSpawnerSystem {
 					// Setting Latest Spawned Object
 					latestSpawnedObject = currentPoolGameObject;
 					
+					#if UNITY_EDITOR
 					UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
 						currentPoolGameObject.name, currentPoolGameObject.transform.position.ToString(), 
 						currentPoolGameObject.transform.rotation.eulerAngles.ToString()));
+					#endif
 				}
 			}
 			// Instantiate New Object
@@ -383,9 +403,11 @@ namespace UltimateSpawnerSystem {
 				// Setting Latest Spawned Object
 				latestSpawnedObject = currentPoolGameObject;
 				
+				#if UNITY_EDITOR
 				UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
 					instantiatedObject.name, instantiatedObject.transform.position.ToString(), 
 					instantiatedObject.transform.rotation.eulerAngles.ToString()));
+				#endif
 			}
 
 			totalSpawns++;
@@ -424,7 +446,10 @@ namespace UltimateSpawnerSystem {
 						interval = RandomTimer();
 						break;
 					default:
+						#if UNITY_EDITOR
 						UltimateLog("Elapsed was called but timer is not configured");
+						#endif
+						
 						break;
 			}
 		}
@@ -434,8 +459,10 @@ namespace UltimateSpawnerSystem {
 			// Generate random number between gap
 			float randomDelayBetweenSpawns = Random.Range(minDelayBetweenSpawns, maxDelayBetweenSpawns);
 			
+			#if UNITY_EDITOR
 			UltimateLog(string.Format("The next spawn will happen in {0} seconds", randomDelayBetweenSpawns));
-
+			#endif
+			
 			return randomDelayBetweenSpawns;
 		}
 
@@ -449,7 +476,9 @@ namespace UltimateSpawnerSystem {
 			if (interval <= progressiveDelayLimit) {
 				progressiveDelay = progressiveDelayLimit;
 				
+				#if UNITY_EDITOR
 				UltimateLog(string.Format("The spawn delay has reached it's limit of {0} seconds", progressiveDelay));
+				#endif
 				
 				return progressiveDelay;
 			}
@@ -457,7 +486,9 @@ namespace UltimateSpawnerSystem {
 			// Reduce the delay
 			progressiveDelay = interval - delayModifier;
 			
+			#if UNITY_EDITOR
 			UltimateLog(string.Format("The next spawn will happen in {0} seconds", progressiveDelay));
+			#endif
 			
 			return progressiveDelay;
 		}
@@ -563,7 +594,9 @@ namespace UltimateSpawnerSystem {
 				return spawnPosition;
 			} 
 			
+			#if UNITY_EDITOR
 			UltimateLog("Something went wrong and the position is null", "ERROR");
+			#endif
 			
 			// In case of null return at (0,0,0)
 			return Vector3.zero;
@@ -637,7 +670,7 @@ namespace UltimateSpawnerSystem {
 			RandomRange = Resources.Load<ScriptableUSEnum>("ConfigFiles/EnumValues/RandomRange");
 		}
 
-		
+		#if UNITY_EDITOR
 		/// <summary>
 		/// Used to send a debug message
 		/// </summary>
@@ -754,6 +787,7 @@ namespace UltimateSpawnerSystem {
 			
 			UltimateLog(setup);
 		}
+		#endif
 
 		#endregion
 		

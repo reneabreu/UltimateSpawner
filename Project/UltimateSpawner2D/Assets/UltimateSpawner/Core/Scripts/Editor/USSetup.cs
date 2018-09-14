@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace UltimateSpawnerSystem {
 
-	public class USSetup : MonoBehaviour {
+	public class USSetup {
 		static List<string> defaultEnums = new List<string>{"Fixed", "RandomFixed", "RandomRange"};
 		static List<string> defaultLists = new List<string>{"SpawnPointEnum", "PositionEnum"};
 		
