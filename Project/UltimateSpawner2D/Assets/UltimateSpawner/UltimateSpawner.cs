@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 namespace UltimateSpawnerSystem {
-
+	[HelpURL("https://github.com/reneabreu/UltimateSpawner")]
 	public class UltimateSpawner : MonoBehaviour {
 
 		#region UltimateSpawner Config
@@ -17,8 +17,10 @@ namespace UltimateSpawnerSystem {
 		#region Spawned Object Settings
 
 		private GameObject latestSpawnedObject;
+		private int totalSpawns;
 		
 		#endregion
+		
 		#region Spawner Basic Settings
 
 		[Tooltip("Choose a Object to spawn")] 
@@ -212,15 +214,14 @@ namespace UltimateSpawnerSystem {
 		
 		#region SpawnedObject
 
-		private void SetLatestSpawnedObject(GameObject spawnedGameObject) {
-			latestSpawnedObject = spawnedGameObject;
+		public GameObject LatestSpawnedObject {
+			get { return latestSpawnedObject; }
 		}
 
-		public GameObject GetLatestSpawnedObject() {
-			return latestSpawnedObject;
+		public int TotalSpawns {
+			get { return totalSpawns; }
 		}
-		
-		
+
 		#endregion
 
 		#region Pooling
@@ -358,7 +359,7 @@ namespace UltimateSpawnerSystem {
 					ApplyMovement(currentPoolGameObject);
 
 					// Setting Latest Spawned Object
-					SetLatestSpawnedObject(currentPoolGameObject);
+					latestSpawnedObject = currentPoolGameObject;
 					
 					UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
 						currentPoolGameObject.name, currentPoolGameObject.transform.position.ToString(), 
@@ -380,13 +381,14 @@ namespace UltimateSpawnerSystem {
 				ApplyMovement(instantiatedObject);
 
 				// Setting Latest Spawned Object
-				SetLatestSpawnedObject(instantiatedObject);
+				latestSpawnedObject = currentPoolGameObject;
 				
 				UltimateLog(string.Format("Spawning object {0} at position {1} with a rotation of {2}",
 					instantiatedObject.name, instantiatedObject.transform.position.ToString(), 
 					instantiatedObject.transform.rotation.eulerAngles.ToString()));
 			}
-			
+
+			totalSpawns++;
 			Spawned.Invoke();
 		}
 		
