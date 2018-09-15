@@ -411,7 +411,9 @@ namespace UltimateSpawnerSystem {
 			}
 
 			totalSpawns++;
-			Spawned.Invoke();
+			
+			if(Spawned != null)
+				Spawned.Invoke();
 		}
 		
 		#endregion
