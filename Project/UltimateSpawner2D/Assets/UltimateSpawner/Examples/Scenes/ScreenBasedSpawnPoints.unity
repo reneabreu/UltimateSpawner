@@ -146,7 +146,6 @@ MonoBehaviour:
   ShowDebugMessages: 0
   inputKeyCode: 0
   usePoolSystem: 1
-  poolCreated: 0
   poolSize: 10
   canIncreasePoolSize: 1
   poolMaxSize: 40
@@ -168,6 +167,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 29268fce02d114d44adbb0cf42e948ef, type: 2}
   - {fileID: 11400000, guid: 054917da9cfda7749becc49acbcff65e, type: 2}
   - {fileID: 11400000, guid: ed0bc6fb09104e24795729177ab4f2a3, type: 2}
+  - {fileID: 11400000, guid: 1904e9cef1d2a324589514a3dec4adc9, type: 2}
   - {fileID: 11400000, guid: dc46288ffd56fa041937b1cc12031151, type: 2}
   - {fileID: 11400000, guid: d615c7d3eb60f7b4f8499441c775164d, type: 2}
   - {fileID: 11400000, guid: 010dc0d4ebe33334a84681cd8fb4c19b, type: 2}

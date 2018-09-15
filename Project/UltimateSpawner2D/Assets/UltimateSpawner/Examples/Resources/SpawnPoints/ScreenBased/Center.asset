@@ -9,10 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d510ffcd755e65e4ea3d9b71e66cb908, type: 3}
-  m_Name: BottomLeft
+  m_Name: Center
   m_EditorClassIdentifier: 
   positionType: 1
-  screenBasedPosition: 6
+  screenBasedPosition: 4
   offset: {x: 0, y: 0, z: 0}
-  vectorPosition: {x: -8.888889, y: -5, z: -10}
-  vectorPositionScreenBased: {x: -8.888889, y: -5, z: 0}
+  vectorPosition: {x: 8.888889, y: 0, z: -10}
+  vectorPositionScreenBased: {x: 0, y: -0.042016804, z: 0}

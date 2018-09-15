@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: Right
   m_EditorClassIdentifier: 
   positionType: 1
-  screenBasedPosition: 4
+  screenBasedPosition: 5
   offset: {x: 0, y: 0, z: 0}
-  vectorPosition: {x: 8.888889, y: 0, z: -10}
+  vectorPosition: {x: 0, y: 0, z: 0}
+  vectorPositionScreenBased: {x: 8.888889, y: -0.042016804, z: 0}
