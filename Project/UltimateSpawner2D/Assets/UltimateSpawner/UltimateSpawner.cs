@@ -499,25 +499,82 @@ namespace UltimateSpawnerSystem {
 
 		void OnDrawGizmos() {
 
-			// TODO: Improve gizmos! For now it is only working with spawn points
-			if (showGizmos && spawnAt == SpawnAt.SpawnPoint) {
-				// SpawnPoint
-				if (spawnAt == SpawnAt.SpawnPoint) {
+			// TODO: Improve gizmos! For now it only works with spawn points
+			// SpawnPoint
+			if (spawnAt == SpawnAt.SpawnPoint && showGizmos) {
 
-					if (spawnPointEnum.list[selectedSpawnPointEnum] == Fixed) {
-						Gizmos.DrawIcon(fixedSpawnPoint.VectorPosition(), "UltimateSpawner/spawner_icon.png", true);
-
-					}
-
-					else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
-						foreach (var spawnPoint in randomSpawnPoints) {
-							if (spawnPoint != null)
-								Gizmos.DrawIcon(spawnPoint.VectorPosition(), "UltimateSpawner/spawner_icon.png", true);
-						}
-					}
+				if (spawnPointEnum.list[selectedSpawnPointEnum] == Fixed) {
+					Gizmos.DrawIcon(fixedSpawnPoint.VectorPosition(), "UltimateSpawner/spawner_icon.png", true);
 
 				}
+
+				else if (spawnPointEnum.list[selectedSpawnPointEnum] == RandomFixed) {
+					foreach (var spawnPoint in randomSpawnPoints) {
+						if (spawnPoint != null)
+							Gizmos.DrawIcon(spawnPoint.VectorPosition(), "UltimateSpawner/spawner_icon.png", true);
+					}
+				}
+
+			} 
+			
+			else if (spawnAt == SpawnAt.Position && showGizmos) {
+				// Keep track of possibilities
+				int countX = 0, countY = 0, countZ = 0;
+				
+				// X 
+				// fixed
+				if (positionEnum.list[selectedXEnum] == Fixed) countX = 1;
+				// Random Range
+				else if (positionEnum.list[selectedXEnum] == RandomRange) countX = 2;
+				// Random Fixed
+				else if (positionEnum.list[selectedXEnum] == RandomFixed) countX = randomFixedX.Count;
+				// Y
+				// fixed
+				if (positionEnum.list[selectedYEnum] == Fixed) countY = 1;
+				// Random Range
+				else if (positionEnum.list[selectedYEnum] == RandomRange) countY = 2;
+				// Random Fixed
+				else if (positionEnum.list[selectedYEnum] == RandomFixed) countY = randomFixedY.Count;
+				// Z
+				// fixed
+				if (positionEnum.list[selectedZEnum] == Fixed) countZ = 1;
+				// Random Range
+				else if (positionEnum.list[selectedZEnum] == RandomRange) countZ = 2;
+				// Random Fixed
+				else if (positionEnum.list[selectedZEnum] == RandomFixed) countZ = randomFixedZ.Count;
+
+				float x = 0, y = 0, z = 0;
+				for (int i = 0; i < countX; i++) {
+					if (positionEnum.list[selectedXEnum] == Fixed) x = fixedX;
+					else if (positionEnum.list[selectedXEnum] == RandomRange) {
+						x = i == 0 ? randomRangeMinX : randomRangeMaxX;
+					}
+					else if (positionEnum.list[selectedXEnum] == RandomFixed)
+						x = randomFixedX[i];
+
+					for (int j = 0; j < countY; j++) {
+						if (positionEnum.list[selectedYEnum] == Fixed) y = fixedY;
+						else if (positionEnum.list[selectedYEnum] == RandomRange) {
+							y = j == 0 ? randomRangeMinY : randomRangeMaxY;
+						}
+						else if (positionEnum.list[selectedYEnum] == RandomFixed)
+							y = randomFixedY[j];
+
+						for (int k = 0; k < countZ; k++) {
+							
+							if (positionEnum.list[selectedZEnum] == Fixed) z = fixedZ;
+							else if (positionEnum.list[selectedZEnum] == RandomRange) {
+								z = k == 0 ? randomRangeMinZ : randomRangeMaxZ;
+							}
+							else if (positionEnum.list[selectedZEnum] == RandomFixed)
+								z = randomFixedZ[k];
+							
+							Gizmos.DrawIcon(new Vector3(x,y,z), "UltimateSpawner/spawner_icon.png", true);
+						} // End Z for
+					} // End Y for
+				} // End X for
 			}
+
 		}
 
 		Vector3 GetSpawnPosition() {

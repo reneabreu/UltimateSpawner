@@ -167,9 +167,9 @@ namespace UltimateSpawnerSystem {
 		
 			ultimateSpawner.spawnAt =
 				(SpawnAt) EditorGUILayout.EnumPopup("Spawn At", ultimateSpawner.spawnAt);
-			
-			ultimateSpawner.showGizmos = EditorGUILayout.Toggle("Show Gizmos?", ultimateSpawner.showGizmos);
 
+			if (ultimateSpawner.spawnAt == SpawnAt.SpawnPoint || ultimateSpawner.spawnAt == SpawnAt.Position)
+				ultimateSpawner.showGizmos = EditorGUILayout.Toggle("Show Gizmos?", ultimateSpawner.showGizmos);
 			
 			if (ultimateSpawner.spawnAt == SpawnAt.SpawnPoint) {
 				
