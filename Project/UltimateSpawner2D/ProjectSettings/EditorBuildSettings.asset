@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+    path: Assets/UltimateSpawner/Examples/Scenes/BasicSpawn2D.unity
+    guid: 62204d0e96e9b4b4eb93623b380303cb
+  - enabled: 0
+    path: Assets/UltimateSpawner/Examples/Scenes/ScreenBasedSpawnPoints.unity
+    guid: 177da2d8513001847b8ff3e3dd996b56
   m_configObjects: {}
