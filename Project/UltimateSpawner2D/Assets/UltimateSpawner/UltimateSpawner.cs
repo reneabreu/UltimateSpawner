@@ -174,6 +174,8 @@ namespace UltimateSpawnerSystem {
 
 		void Awake() {
 			
+			SetEnum();
+			
 			#if UNITY_EDITOR
 			ShowUltimateSpawnerSetUp();
 			#endif
