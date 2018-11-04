@@ -132,6 +132,9 @@ namespace UltimateSpawnerSystem {
 		// Target
 		public Transform targetTransform;
 		
+		// External
+		public Vector3 externalPosition;
+		
 		#endregion
 
 		#region Rotation Setup
@@ -578,6 +581,10 @@ namespace UltimateSpawnerSystem {
 					} // End Y for
 				} // End X for
 			}
+			
+			else if (spawnAt == SpawnAt.ExternalPosition) {
+				Gizmos.DrawIcon(externalPosition, "UltimateSpawner/spawner_icon.png", true);
+			}
 
 		}
 
@@ -654,6 +661,9 @@ namespace UltimateSpawnerSystem {
 
 				return spawnPosition;
 			} 
+			
+			else if (spawnAt == SpawnAt.ExternalPosition)
+				return externalPosition;
 			
 			#if UNITY_EDITOR
 			UltimateLog("Something went wrong and the position is null", "ERROR");
@@ -850,6 +860,14 @@ namespace UltimateSpawnerSystem {
 		}
 		#endif
 
+		public void SetObjectToSpawn(GameObject newObjectToSpawn) {
+			objectToSpawn = newObjectToSpawn;
+		}
+
+		public void SetExternalPosition(Vector3 extPos) {
+			externalPosition = extPos;
+		}
+
 		#endregion
 		
 		#region UltimateSpawner Events
@@ -873,7 +891,8 @@ namespace UltimateSpawnerSystem {
 		Spawner,
 		SpawnPoint,
 		Position,
-		TargetTransform
+		TargetTransform,
+		ExternalPosition
 	}
 
 	public enum SpawnRotation {
