@@ -325,7 +325,9 @@ namespace UltimateSpawnerSystem {
 				#endif
 				
 				GameObject newPoolObject = Instantiate(objectToSpawn);
-				objectToSpawn.SetActive(false);
+				newPoolObject.SetActive(false);
+				newPoolObject.AddComponent<USPoolObject>().SetUltimateSpawner(this);
+				
 				return newPoolObject;
 			}
 			else {
