@@ -150,13 +150,14 @@ namespace UltimateSpawnerSystem {
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
 		
-		string[] spawnPointStrings, positionStrings;
+		string[] spawnPointStrings, positionStrings, transformStrings;
 		
 		bool showX, showY, showZ;
 
 		void ShowPositionSettings() {
 			
 			var spawnPointsList = serializedObject.FindProperty("randomSpawnPoints");
+			var targetTransformList = serializedObject.FindProperty("targetTransformList");
 			var randomFixedX = serializedObject.FindProperty("randomFixedX");
 			var randomFixedY = serializedObject.FindProperty("randomFixedY");
 			var randomFixedZ = serializedObject.FindProperty("randomFixedZ");
@@ -367,10 +368,43 @@ namespace UltimateSpawnerSystem {
 				}
 
 			} else if (ultimateSpawner.spawnAt == SpawnAt.TargetTransform) {
-				GUILayout.Label("Transform Spawn Point");
+
+				if (ultimateSpawner.spawnPointEnum != null) {
+
+					transformStrings = new string[ultimateSpawner.spawnPointEnum.list.Count];
+					for (int i = 0; i < ultimateSpawner.spawnPointEnum.list.Count; i++) {
+						transformStrings[i] = ultimateSpawner.spawnPointEnum.list[i].name;
+					}
 					
-				ultimateSpawner.targetTransform = (Transform) EditorGUILayout.ObjectField("Spawn Point",
+					GUILayout.Space(10);
+			
+					GUILayout.Label("Transform Settings", EditorStyles.boldLabel);
+					ultimateSpawner.selectedTransformEnum = EditorGUILayout.Popup("SpawnPoint Type",ultimateSpawner.selectedTransformEnum, transformStrings);
+				}
+				else {
+					ultimateSpawner.SetEnum();
+				}
+
+				if (ultimateSpawner.spawnPointEnum.list[ultimateSpawner.selectedTransformEnum] == Fixed) {
+
+					ultimateSpawner.targetTransform = (Transform) EditorGUILayout.ObjectField("Spawn Point",
 					ultimateSpawner.targetTransform, typeof(Transform), true);
+				} else if (ultimateSpawner.spawnPointEnum.list[ultimateSpawner.selectedTransformEnum] == RandomFixed) {
+				
+				EditorGUILayout.PropertyField(targetTransformList, new GUIContent("List of Target's Transforms"));
+				
+					// List
+					EditorGUI.indentLevel += 1;
+					if (targetTransformList.isExpanded) {
+						EditorGUILayout.PropertyField(targetTransformList.FindPropertyRelative("Array.size"));
+						for (int i = 0; i < targetTransformList.arraySize; i++) {
+							EditorGUILayout.PropertyField(targetTransformList.GetArrayElementAtIndex(i));
+						}
+					}
+					targetTransformList.serializedObject.ApplyModifiedProperties();
+					EditorGUI.indentLevel -= 1;
+					
+				}
 			
 			} else if (ultimateSpawner.spawnAt == SpawnAt.Spawner) {
 				EditorGUILayout.HelpBox("The object will spawn at UltimateSpawner's position", MessageType.Info, true);

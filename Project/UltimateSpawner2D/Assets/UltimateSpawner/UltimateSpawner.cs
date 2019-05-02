@@ -129,8 +129,10 @@ namespace UltimateSpawnerSystem {
 		public float randomRangeMinZ;
 		public float randomRangeMaxZ;
 		
-		// Target
+		// Target Transform
+		public int selectedTransformEnum;
 		public Transform targetTransform;
+		public List<Transform> targetTransformList;
 		
 		// External
 		public Vector3 externalPosition;
@@ -598,7 +600,14 @@ namespace UltimateSpawnerSystem {
 			} 
 			// Transform
 			else if (spawnAt == SpawnAt.TargetTransform) {
-				return targetTransform.position;
+				if (spawnPointEnum.list[selectedTransformEnum] == Fixed) {
+					return targetTransform.position;
+				}
+
+				else if (spawnPointEnum.list[selectedTransformEnum] == RandomFixed) {
+					int randomTransform = Random.Range(0, targetTransformList.Count);
+					return targetTransformList[randomTransform].position;
+				}
 			} 
 			// SpawnPoint
 			else if (spawnAt == SpawnAt.SpawnPoint) {
