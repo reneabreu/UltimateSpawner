@@ -36,12 +36,21 @@ namespace UltimateSpawnerSystem {
 						
 //			EditorGUILayout.PropertyField(background, new GUIContent("Background Color"));
 			
-			ultimateSpawner.objectToSpawn = (GameObject) EditorGUILayout.ObjectField("Object to Spawn",
+			ultimateSpawner.objectToSpawn = (GameObject) EditorGUILayout.ObjectField(new GUIContent("Object to Spawn","Choose an object to spawn"),
 				ultimateSpawner.objectToSpawn, typeof(GameObject), true);
 						
 			GUILayout.Space(10);
 
-			ultimateSpawner.ShowDebugMessages = EditorGUILayout.Toggle("Show Debug Log?", ultimateSpawner.ShowDebugMessages);
+			GUILayout.BeginHorizontal();
+			if(GUILayout.Button("Debug " + (ultimateSpawner.ShowDebugMessages ? "On" : "Off")))
+			{
+				ultimateSpawner.ShowDebugMessages = !ultimateSpawner.ShowDebugMessages;
+			}
+			if(GUILayout.Button("Pooling System " + (ultimateSpawner.usePoolSystem ? "On" : "Off")))
+			{
+				ultimateSpawner.usePoolSystem = !ultimateSpawner.usePoolSystem;
+			}
+			GUILayout.EndHorizontal();
 
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
@@ -94,14 +103,12 @@ namespace UltimateSpawnerSystem {
 		}
 
 		void ShowPoolSettings() {
-
-			GUILayout.Space(5);
-			GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
-
-			ultimateSpawner.usePoolSystem = EditorGUILayout.Toggle("Use Pooling System?", ultimateSpawner.usePoolSystem);
 			if (ultimateSpawner.usePoolSystem) {
 
-				GUILayout.Space(10);
+				// Line Divider		
+				GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+				GUILayout.Space(5);
+				GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
 
 				ultimateSpawner.poolSize = EditorGUILayout.IntField("Pool Size", ultimateSpawner.poolSize);
 
@@ -495,8 +502,6 @@ namespace UltimateSpawnerSystem {
 				}
 			}
 			
-			// Line Divider		
-			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
 	}
 }
