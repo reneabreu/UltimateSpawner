@@ -839,7 +839,11 @@ namespace UltimateSpawnerSystem {
 			}
 
 			if (spawnAt == SpawnAt.TargetTransform)
-				setup += string.Format("Spawn at {0}'s transform position\n", targetTransform.name);
+				if(spawnPointEnum.list[selectedTransformEnum] == Fixed)
+					setup += string.Format("Spawn at {0}'s transform position\n", targetTransform.name);
+				else if(spawnPointEnum.list[selectedTransformEnum] == RandomFixed)
+					setup += string.Format("Randomizing between {0} transforms\n", targetTransformList.Count);
+					
 			
 			if (spawnRotation == SpawnRotation.Identity)
 				setup += "Object's rotation will be: Quaternion.Identity (0,0,0)\n";
