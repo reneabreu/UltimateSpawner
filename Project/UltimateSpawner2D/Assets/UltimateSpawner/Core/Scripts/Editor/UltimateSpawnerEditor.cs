@@ -503,5 +503,13 @@ namespace UltimateSpawnerSystem {
 			}
 			
 		}
+
+		[MenuItem("Tools/UltimateSpawner/Add UltimateSpawner")]
+		static void AddUltimateSpawner() {
+			GameObject usPrefab = Instantiate((GameObject)AssetDatabase.LoadAssetAtPath("Assets/UltimateSpawner/UltimateSpawner.prefab", typeof(GameObject)), Vector3.zero, Quaternion.identity);
+			usPrefab.name = usPrefab.name.Replace("(Clone)", "");
+
+			Undo.RegisterCreatedObjectUndo(usPrefab, "Added UltimateSpawner to scene");
+		}
 	}
 }

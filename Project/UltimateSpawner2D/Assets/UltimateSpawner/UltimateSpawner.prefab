@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7405212608043426488
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 72667198694104185}
+  - component: {fileID: 7365514968328030026}
+  m_Layer: 0
+  m_Name: UltimateSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &72667198694104185
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405212608043426488}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.14844894, y: -1.0369349, z: -1.3374151}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7365514968328030026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7405212608043426488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6b587342079ec5429e1e1477f1e7148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToSpawn: {fileID: 0}
+  spawnMode: 0
+  ShowDebugMessages: 0
+  inputKeyCode: 0
+  usePoolSystem: 0
+  poolSize: 20
+  canIncreasePoolSize: 0
+  poolMaxSize: 0
+  firstSpawnTime: 0
+  fixedDelayBetweenSpawns: 0
+  minDelayBetweenSpawns: 0
+  maxDelayBetweenSpawns: 0
+  startingDelayBetweenSpawns: 0
+  delayModifier: 0
+  progressiveDelayLimit: 0
+  spawnAt: 0
+  showGizmos: 0
+  spawnPointEnum: {fileID: 11400000, guid: 013d835783e2bf046a61c9c2dda44328, type: 2}
+  selectedSpawnPointEnum: 0
+  fixedSpawnPoint: {fileID: 0}
+  randomSpawnPoints: []
+  positionEnum: {fileID: 11400000, guid: 65c77474a4a11874fb0d44ed3afd6ae0, type: 2}
+  selectedPositionEnum: 0
+  selectedXEnum: 0
+  fixedX: 0
+  randomFixedX: []
+  randomRangeMinX: 0
+  randomRangeMaxX: 0
+  selectedYEnum: 0
+  fixedY: 0
+  randomFixedY: []
+  randomRangeMinY: 0
+  randomRangeMaxY: 0
+  selectedZEnum: 0
+  fixedZ: 0
+  randomFixedZ: []
+  randomRangeMinZ: 0
+  randomRangeMaxZ: 0
+  selectedTransformEnum: 0
+  targetTransform: {fileID: 0}
+  targetTransformList: []
+  externalPosition: {x: 0, y: 0, z: 0}
+  spawnRotation: 0
+  customRotationX: 0
+  customRotationY: 0
+  customRotationZ: 0
+  objectType: 0
+  movementType: 0
+  forceMode2D: 0
+  force2D: {x: 0, y: 0}
+  velocity2D: {x: 0, y: 0}
+  forceMode: 0
+  force3D: {x: 0, y: 0, z: 0}
+  velocity3D: {x: 0, y: 0, z: 0}
