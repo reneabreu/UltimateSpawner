@@ -269,7 +269,7 @@ namespace UltimateSpawnerSystem {
                 // Spawn Pool
                 for (int i = 0; i < poolSize; i++) {
                     GameObject poolObject = Instantiate(objectToSpawn);
-                    poolObject.SetActive(false);
+                    poolObject.SetActive(spawnActive);
                     objectsPool.Add(poolObject);
                     poolObject.AddComponent<USPoolObject>().SetUltimateSpawner(this);
                 }
@@ -310,7 +310,7 @@ namespace UltimateSpawnerSystem {
 #endif
 
                     objectsPool[i] = Instantiate(objectToSpawn);
-                    objectsPool[i].SetActive(false);
+                    objectsPool[i].SetActive(spawnActive);
                     objectsPool[i].AddComponent<USPoolObject>().SetUltimateSpawner(this);
 
                     return objectsPool[i];
@@ -326,7 +326,7 @@ namespace UltimateSpawnerSystem {
 #endif
 
                 GameObject newPoolObject = Instantiate(objectToSpawn);
-                newPoolObject.SetActive(false);
+                newPoolObject.SetActive(spawnActive);
                 newPoolObject.AddComponent<USPoolObject>().SetUltimateSpawner(this);
 
                 return newPoolObject;
@@ -371,7 +371,7 @@ namespace UltimateSpawnerSystem {
 
                 if (currentPoolGameObject != null) {
                     // Activate it
-                    currentPoolGameObject.SetActive(true);
+                    currentPoolGameObject.SetActive(spawnActive);
 
                     // Position it
                     Vector3 pos = GetSpawnPosition();
