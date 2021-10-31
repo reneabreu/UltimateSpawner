@@ -1,9 +1,10 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using UnityEditorInternal;
 
 namespace UltimateSpawnerSystem {
 	[CustomEditor(typeof(UltimateSpawner))]
@@ -36,21 +37,14 @@ namespace UltimateSpawnerSystem {
 						
 //			EditorGUILayout.PropertyField(background, new GUIContent("Background Color"));
 			
-			ultimateSpawner.objectToSpawn = (GameObject) EditorGUILayout.ObjectField(new GUIContent("Object to Spawn","Choose an object to spawn"),
+			ultimateSpawner.objectToSpawn = (GameObject) EditorGUILayout.ObjectField("Object to Spawn",
 				ultimateSpawner.objectToSpawn, typeof(GameObject), true);
+            ultimateSpawner.spawnActive = EditorGUILayout.Toggle("Spawn Object Active In Scene", ultimateSpawner.spawnActive);
+
 						
 			GUILayout.Space(10);
 
-			GUILayout.BeginHorizontal();
-			if(GUILayout.Button("Debug " + (ultimateSpawner.ShowDebugMessages ? "On" : "Off")))
-			{
-				ultimateSpawner.ShowDebugMessages = !ultimateSpawner.ShowDebugMessages;
-			}
-			if(GUILayout.Button("Pooling System " + (ultimateSpawner.usePoolSystem ? "On" : "Off")))
-			{
-				ultimateSpawner.usePoolSystem = !ultimateSpawner.usePoolSystem;
-			}
-			GUILayout.EndHorizontal();
+			ultimateSpawner.ShowDebugMessages = EditorGUILayout.Toggle("Show Debug Log?", ultimateSpawner.ShowDebugMessages);
 
 			// Line Divider		
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
@@ -103,12 +97,14 @@ namespace UltimateSpawnerSystem {
 		}
 
 		void ShowPoolSettings() {
+
+			GUILayout.Space(5);
+			GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
+
+			ultimateSpawner.usePoolSystem = EditorGUILayout.Toggle("Use Pooling System?", ultimateSpawner.usePoolSystem);
 			if (ultimateSpawner.usePoolSystem) {
 
-				// Line Divider		
-				GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
-				GUILayout.Space(5);
-				GUILayout.Label("Pool Settings", EditorStyles.boldLabel);
+				GUILayout.Space(10);
 
 				ultimateSpawner.poolSize = EditorGUILayout.IntField("Pool Size", ultimateSpawner.poolSize);
 
@@ -157,14 +153,13 @@ namespace UltimateSpawnerSystem {
 			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
 		
-		string[] spawnPointStrings, positionStrings, transformStrings;
+		string[] spawnPointStrings, positionStrings;
 		
 		bool showX, showY, showZ;
 
 		void ShowPositionSettings() {
 			
 			var spawnPointsList = serializedObject.FindProperty("randomSpawnPoints");
-			var targetTransformList = serializedObject.FindProperty("targetTransformList");
 			var randomFixedX = serializedObject.FindProperty("randomFixedX");
 			var randomFixedY = serializedObject.FindProperty("randomFixedY");
 			var randomFixedZ = serializedObject.FindProperty("randomFixedZ");
@@ -172,8 +167,11 @@ namespace UltimateSpawnerSystem {
 			GUILayout.Space(5);
 			
 			GUILayout.Label("Position Settings", EditorStyles.boldLabel);
-		
-			ultimateSpawner.spawnAt =
+            ultimateSpawner.raycastPositionAssist = EditorGUILayout.Toggle("Raycast Position Assist", ultimateSpawner.raycastPositionAssist);
+            ultimateSpawner.raycastAssistLayerMask = EditorGUILayout.MaskField("Assist LayerMask" ,InternalEditorUtility.LayerMaskToConcatenatedLayersMask(ultimateSpawner.raycastAssistLayerMask), InternalEditorUtility.layers);
+
+
+            ultimateSpawner.spawnAt =
 				(SpawnAt) EditorGUILayout.EnumPopup("Spawn At", ultimateSpawner.spawnAt);
 
 			if (ultimateSpawner.spawnAt == SpawnAt.SpawnPoint || ultimateSpawner.spawnAt == SpawnAt.Position)
@@ -375,43 +373,10 @@ namespace UltimateSpawnerSystem {
 				}
 
 			} else if (ultimateSpawner.spawnAt == SpawnAt.TargetTransform) {
-
-				if (ultimateSpawner.spawnPointEnum != null) {
-
-					transformStrings = new string[ultimateSpawner.spawnPointEnum.list.Count];
-					for (int i = 0; i < ultimateSpawner.spawnPointEnum.list.Count; i++) {
-						transformStrings[i] = ultimateSpawner.spawnPointEnum.list[i].name;
-					}
+				GUILayout.Label("Transform Spawn Point");
 					
-					GUILayout.Space(10);
-			
-					GUILayout.Label("Transform Settings", EditorStyles.boldLabel);
-					ultimateSpawner.selectedTransformEnum = EditorGUILayout.Popup("SpawnPoint Type",ultimateSpawner.selectedTransformEnum, transformStrings);
-				}
-				else {
-					ultimateSpawner.SetEnum();
-				}
-
-				if (ultimateSpawner.spawnPointEnum.list[ultimateSpawner.selectedTransformEnum] == Fixed) {
-
-					ultimateSpawner.targetTransform = (Transform) EditorGUILayout.ObjectField("Spawn Point",
+				ultimateSpawner.targetTransform = (Transform) EditorGUILayout.ObjectField("Spawn Point",
 					ultimateSpawner.targetTransform, typeof(Transform), true);
-				} else if (ultimateSpawner.spawnPointEnum.list[ultimateSpawner.selectedTransformEnum] == RandomFixed) {
-				
-				EditorGUILayout.PropertyField(targetTransformList, new GUIContent("List of Target's Transforms"));
-				
-					// List
-					EditorGUI.indentLevel += 1;
-					if (targetTransformList.isExpanded) {
-						EditorGUILayout.PropertyField(targetTransformList.FindPropertyRelative("Array.size"));
-						for (int i = 0; i < targetTransformList.arraySize; i++) {
-							EditorGUILayout.PropertyField(targetTransformList.GetArrayElementAtIndex(i));
-						}
-					}
-					targetTransformList.serializedObject.ApplyModifiedProperties();
-					EditorGUI.indentLevel -= 1;
-					
-				}
 			
 			} else if (ultimateSpawner.spawnAt == SpawnAt.Spawner) {
 				EditorGUILayout.HelpBox("The object will spawn at UltimateSpawner's position", MessageType.Info, true);
@@ -502,14 +467,108 @@ namespace UltimateSpawnerSystem {
 				}
 			}
 			
+			// Line Divider		
+			GUILayout.Box("", new GUILayoutOption[] {GUILayout.ExpandWidth(true), GUILayout.Height(1)});
 		}
 
-		[MenuItem("Tools/UltimateSpawner/Add UltimateSpawner")]
-		static void AddUltimateSpawner() {
-			GameObject usPrefab = Instantiate((GameObject)AssetDatabase.LoadAssetAtPath("Assets/UltimateSpawner/UltimateSpawner.prefab", typeof(GameObject)), Vector3.zero, Quaternion.identity);
-			usPrefab.name = usPrefab.name.Replace("(Clone)", "");
-
-			Undo.RegisterCreatedObjectUndo(usPrefab, "Added UltimateSpawner to scene");
+		public static LayerMask LayerMaskField (string label, LayerMask selected) {
+			return LayerMaskField (label,selected,true);
+		}
+		
+		public static LayerMask LayerMaskField (string label, LayerMask selected, bool showSpecial) {
+			
+			List<string> layers = new List<string>();
+			List<int> layerNumbers = new List<int>();
+			
+			string selectedLayers = "";
+			
+			for (int i=0;i<32;i++) {
+				
+				string layerName = LayerMask.LayerToName (i);
+				
+				if (layerName != "") {
+					if (selected == (selected | (1 << i))) {
+						
+						if (selectedLayers == "") {
+							selectedLayers = layerName;
+						} else {
+							selectedLayers = "Mixed";
+						}
+					}
+				}
+			}
+			
+			EventType lastEvent = Event.current.type;
+			
+			if (Event.current.type != EventType.MouseDown && Event.current.type != EventType.ExecuteCommand) {
+				if (selected.value == 0) {
+					layers.Add ("Nothing");
+				} else if (selected.value == -1) {
+					layers.Add ("Everything");
+				} else {
+					layers.Add (selectedLayers);
+				}
+				layerNumbers.Add (-1);
+			}
+			
+			if (showSpecial) {
+				layers.Add ((selected.value == 0 ? "[X] " : "     ") + "Nothing");
+				layerNumbers.Add (-2);
+				
+				layers.Add ((selected.value == -1 ? "[X] " : "     ") + "Everything");
+				layerNumbers.Add (-3);
+			}
+			
+			for (int i=0;i<32;i++) {
+				
+				string layerName = LayerMask.LayerToName (i);
+				
+				if (layerName != "") {
+					if (selected == (selected | (1 << i))) {
+						layers.Add ("[X] "+layerName);
+					} else {
+						layers.Add ("     "+layerName);
+					}
+					layerNumbers.Add (i);
+				}
+			}
+			
+			bool preChange = GUI.changed;
+			
+			GUI.changed = false;
+			
+			int newSelected = 0;
+			
+			if (Event.current.type == EventType.MouseDown) {
+				newSelected = -1;
+			}
+			
+			newSelected = EditorGUILayout.Popup (label,newSelected,layers.ToArray(),EditorStyles.layerMaskField);
+			
+			if (GUI.changed && newSelected >= 0) {
+				//newSelected -= 1;
+				
+				Debug.Log (lastEvent +" "+newSelected + " "+layerNumbers[newSelected]);
+				
+				if (showSpecial && newSelected == 0) {
+					selected = 0;
+				} else if (showSpecial && newSelected == 1) {
+					selected = -1;
+				} else {
+					
+					if (selected == (selected | (1 << layerNumbers[newSelected]))) {
+						selected &= ~(1 << layerNumbers[newSelected]);
+						//Debug.Log ("Set Layer "+LayerMask.LayerToName (LayerNumbers[newSelected]) + " To False "+selected.value);
+					} else {
+						//Debug.Log ("Set Layer "+LayerMask.LayerToName (LayerNumbers[newSelected]) + " To True "+selected.value);
+						selected = selected | (1 << layerNumbers[newSelected]);
+					}
+				}
+			} else {
+				GUI.changed = preChange;
+			}
+			
+			return selected;
 		}
 	}
 }
